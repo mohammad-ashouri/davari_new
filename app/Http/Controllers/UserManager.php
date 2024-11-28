@@ -104,16 +104,17 @@ class UserManager extends Controller
         $password = $request->input('password');
         $type = $request->input('type');
 
-        $lastUserId=User::orderByDesc('id')->first()->id;
+        $lastUserId = User::orderByDesc('id')->first()->id;
 
         $user = new User();
-        $user->id = $lastUserId+1;
+        $user->id = $lastUserId + 1;
         $user->name = $name;
         $user->family = $family;
         $user->username = $username;
         $user->password = bcrypt($password);
         $user->type = $type;
         $user->subject = Role::findById($type)->name;
+        $user->adder = auth()->user()->id;
         $user->save();
         $user->assignRole(Role::findById($type)->name);
         return $this->success(true, 'userAdded', 'کاربر با موفقیت تعریف شد. برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
@@ -132,6 +133,7 @@ class UserManager extends Controller
             $user->type = $type;
             $user->subject = Role::findById($type)->name;
         }
+        $user->editor = auth()->user()->id;
         $user->syncRoles(Role::findById($type)->name);
         $user->save();
         return $this->success(true, 'userEdited', 'کاربر با موفقیت ویرایش شد. برای نمایش اطلاعات ویرایش شده، صفحه را رفرش نمایید.');

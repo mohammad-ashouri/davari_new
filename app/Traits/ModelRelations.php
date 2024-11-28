@@ -17,9 +17,4 @@ trait ModelRelations
     {
         return $this->belongsTo(User::class, 'editor', 'id');
     }
-
-    public function brandInfo()
-    {
-        return $this->belongsTo(Brand::class, 'brand', 'id')->orderBy('name','asc');
-    }
 }

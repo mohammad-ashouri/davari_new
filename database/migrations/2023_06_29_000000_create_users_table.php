@@ -27,30 +27,14 @@ return new class extends Migration {
             $table->unsignedBigInteger('building')->nullable();
             $table->string('room_number')->nullable();
             $table->rememberToken();
+            $table->unsignedBigInteger('adder')->nullable();
+            $table->foreign('adder')->references('id')->on('users');
+            $table->unsignedBigInteger('editor')->nullable();
+            $table->foreign('editor')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });
 
-        $password = bcrypt(12345678);
-        $query = "INSERT INTO users (id, username, password, name, family, type, subject, active, ntcp)
-VALUES (1, 'admin', '$password', 'Super',
-        'Admin', 1, 'ادمین کل', 1, 0);";
-        DB::statement($query);
-
-        $query = "INSERT INTO users (id, username, password, name, family, type, subject, active, ntcp)
-VALUES (2, 'farajnejad', '$password', 'حسن',
-        'فرج نژاد', 1, 'معاون', 1, 0);";
-        DB::statement($query);
-
-        $query = "INSERT INTO users (id, username, password, name, family, type, subject, active, ntcp)
-VALUES (3, 'mostafavizadeh', '$password', 'حسین',
-        'مصطفوی زاده', 1, 'مدیر پژوهش', 1, 0);";
-        DB::statement($query);
-
-        $query = "INSERT INTO users (id, username, password, name, family, type, subject, active, ntcp)
-VALUES (4, 'helali', '$password', 'ابوالفضل',
-        'هلالی', 1, 'مدیر اجرایی', 1, 0);";
-        DB::statement($query);
 
     }
 

@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             PermissionsSeeder::class,
+            DefaultUsers::class,
+            PostFormats::class,
         ]);
 
     }

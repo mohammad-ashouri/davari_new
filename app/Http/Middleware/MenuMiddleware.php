@@ -36,6 +36,12 @@ class MenuMiddleware
                             'permission' => "لیست نقش",
                             'icon' => 'las la-user-tag',
                         ],
+                        [
+                            'title' => 'قالب اثر',
+                            'link' => '/PostFormats',
+                            'permission' => "لیست قالب اثر",
+                            'icon' => 'lab la-wpforms',
+                        ],
                     ]
                 ],
                 6 => [
