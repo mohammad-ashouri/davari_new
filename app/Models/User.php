@@ -20,6 +20,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'name',
         'email',
         'password',
@@ -51,8 +52,4 @@ class User extends Authenticatable
 
     protected $primaryKey='id';
 
-    public function buildingInfo()
-    {
-        return $this->belongsTo(Building::class, 'building', 'id');
-    }
 }

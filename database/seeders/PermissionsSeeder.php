@@ -131,11 +131,8 @@ class PermissionsSeeder extends Seeder
 //        ]);
 
         $role = Role::where('name', 'ادمین کل')->first();
-        $users = User::get();
-        foreach ($users as $user) {
-            $user = User::findOrFail($user->id);
-            $user->assignRole([$role->id]);
-        }
+        $user = User::find(1);
+        $user->assignRole([$role->id]);
 
         $role = Role::where('name', 'مدیر پژوهش')->first();
         $user = User::find(3);

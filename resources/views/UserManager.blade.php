@@ -59,27 +59,6 @@
                                                            placeholder="رمزعبور">
                                                 </div>
                                                 <div class="mb-4">
-                                                    <label for="building"
-                                                           class="block text-gray-700 text-sm font-bold mb-2">ساختمان:</label>
-                                                    <select id="building" class="border rounded-md w-full px-3 py-2"
-                                                            name="building">
-                                                        <option value="" disabled selected>انتخاب کنید</option>
-                                                        @foreach($buildings as $building)
-                                                            <option
-                                                                value="{{$building->id}}">{{$building->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="mb-4">
-                                                    <label for="roomNumber"
-                                                           class="block text-gray-700 text-sm font-bold mb-2">شماره
-                                                        اتاق:</label>
-                                                    <input type="text" id="roomNumber" name="roomNumber"
-                                                           autocomplete="off"
-                                                           class="border rounded-md w-full mb-4 px-3 py-2 text-right"
-                                                           placeholder="شماره اتاق">
-                                                </div>
-                                                <div class="mb-4">
                                                     <label for="type"
                                                            class="block text-gray-700 text-sm font-bold mb-2">نقش
                                                         کاربر:</label>
@@ -163,28 +142,6 @@
                                                            placeholder="نام خانوادگی کاربر">
                                                 </div>
                                                 <div class="mb-4">
-                                                    <label for="editedBuilding"
-                                                           class="block text-gray-700 text-sm font-bold mb-2">ساختمان:</label>
-                                                    <select id="editedBuilding"
-                                                            class="border rounded-md w-full px-3 py-2"
-                                                            name="editedBuilding">
-                                                        <option value="" disabled selected>انتخاب کنید</option>
-                                                        @foreach($buildings as $building)
-                                                            <option
-                                                                value="{{$building->id}}">{{$building->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="mb-4">
-                                                    <label for="editedRoomNumber"
-                                                           class="block text-gray-700 text-sm font-bold mb-2">شماره
-                                                        اتاق:</label>
-                                                    <input type="text" id="editedRoomNumber" name="editedRoomNumber"
-                                                           autocomplete="off"
-                                                           class="border rounded-md w-full mb-4 px-3 py-2 text-right"
-                                                           placeholder="شماره اتاق">
-                                                </div>
-                                                <div class="mb-4">
                                                     <label for="editedType"
                                                            class="block text-gray-700 text-sm font-bold mb-2">نقش
                                                         کاربر:</label>
@@ -245,8 +202,6 @@
                             <th class=" px-6 py-3  font-bold ">کد کاربری</th>
                             <th class=" px-6 py-3  font-bold ">مشخصات</th>
                             <th class=" px-3 py-3  font-bold ">نوع کاربری</th>
-                            <th class=" px-3 py-3  font-bold ">ساختمان</th>
-                            <th class=" px-3 py-3  font-bold ">اتاق</th>
                             <th class=" px-3 py-3  font-bold ">فعال/غیرفعال</th>
                             <th class=" px-3 py-3  font-bold ">نیازمند تغییر رمز عبور</th>
                             <th class=" px-3 py-3  font-bold ">بازنشانی رمز عبور</th>
@@ -261,12 +216,6 @@
                                     @foreach ($user->roles as $role)
                                         {{ $role->name }}
                                     @endforeach
-                                </td>
-                                <td class="px-3 py-4">
-                                    {{ $user->buildingInfo?->name }}
-                                </td>
-                                <td class="px-3 py-4">
-                                    {{ $user->room_number }}
                                 </td>
                                 <td class="px-3 py-4">
                                     @can('تغییر وضعیت کاربر')

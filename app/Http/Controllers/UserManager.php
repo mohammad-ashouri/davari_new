@@ -22,10 +22,9 @@ class UserManager extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $userList = User::with('buildingInfo')->orderBy('id', 'asc')->paginate(10);
+        $userList = User::orderBy('id', 'asc')->paginate(10);
         $allRoles = Role::get();
-        $buildings= Building::whereStatus(1)->get();
-        return view('UserManager', compact('userList', 'allRoles','buildings'));
+        return view('UserManager', compact('userList', 'allRoles'));
     }
 
     public function ChangeUserActivationStatus(Request $request): \Illuminate\Http\JsonResponse
@@ -95,7 +94,6 @@ class UserManager extends Controller
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255|unique:users',
             'type' => 'required|exists:roles,id',
-            'building' => 'required|exists:buildings,id',
         ]);
         if ($validator->fails()) {
             return $this->alerts(false, 'userFounded', 'نام کاربری تکراری وارد شده است.');
@@ -105,17 +103,16 @@ class UserManager extends Controller
         $username = $request->input('username');
         $password = $request->input('password');
         $type = $request->input('type');
-        $building = $request->input('building');
-        $roomNumber = $request->input('roomNumber');
+
+        $lastUserId=User::orderByDesc('id')->first()->id;
 
         $user = new User();
+        $user->id = $lastUserId+1;
         $user->name = $name;
         $user->family = $family;
         $user->username = $username;
         $user->password = bcrypt($password);
         $user->type = $type;
-        $user->building = $building;
-        $user->room_number = $roomNumber;
         $user->subject = Role::findById($type)->name;
         $user->save();
         $user->assignRole(Role::findById($type)->name);
@@ -128,15 +125,11 @@ class UserManager extends Controller
         $name = $request->input('editedName');
         $family = $request->input('editedFamily');
         $type = $request->input('editedType');
-        $building = $request->input('editedBuilding');
-        $roomNumber = $request->input('editedRoomNumber');
         $user = User::findOrFail($userID);
         if ($user) {
             $user->name = $name;
             $user->family = $family;
             $user->type = $type;
-            $user->building = $building;
-            $user->room_number = $roomNumber;
             $user->subject = Role::findById($type)->name;
         }
         $user->syncRoles(Role::findById($type)->name);
