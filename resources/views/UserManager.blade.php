@@ -66,6 +66,7 @@
                                                             name="type">
                                                         <option value="" disabled selected>انتخاب کنید</option>
                                                         @foreach($allRoles as $role)
+                                                            @continue(!auth()->user()->hasRole('ادمین کل') and $role->name=='ادمین کل')
                                                             <option value="{{$role->id}}">{{$role->name}}</option>
                                                         @endforeach
                                                     </select>
@@ -120,6 +121,7 @@
                                                         <option value="" selected disabled>انتخاب کنید</option>
                                                         @foreach($userList as $user)
                                                             <option
+                                                                @continue(!auth()->user()->hasRole('ادمین کل') and $role->name=='ادمین کل')
                                                                 value="{{ $user->id }}">{{ $user->name.' '.$user->family . ' ('.$user->username.')'}}</option>
                                                         @endforeach
                                                     </select>
@@ -149,6 +151,7 @@
                                                             name="editedType">
                                                         <option value="" disabled selected>انتخاب کنید</option>
                                                         @foreach($allRoles as $role)
+                                                            @continue(!auth()->user()->hasRole('ادمین کل') and $role->name=='ادمین کل')
                                                             <option value="{{$role->id}}">{{$role->name}}</option>
                                                         @endforeach
                                                     </select>
@@ -173,42 +176,21 @@
                 @endcan
             </div>
             <div class="bg-white rounded shadow p-6 flex flex-col items-center">
-                @can('جستجوی کاربر')
-                    <div class=" mb-4 flex w-full">
-                        <label for="search-Username-UserManager" class="block mt-3 text-sm font-bold text-gray-700">جستجو
-                            در
-                            کد
-                            کاربری:</label>
-                        <input id="search-Username-UserManager" autocomplete="off"
-                               placeholder="لطفا کد کاربری را وارد نمایید."
-                               type="text" name="search-Username-UserManager"
-                               class="ml-4 mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"/>
-                        <label for="search-type-UserManager"
-                               class="block text-gray-700 text-sm font-bold mt-3 ">جستجو در نقش
-                            کاربری:</label>
-                        <select id="search-type-UserManager" class="border rounded-md  px-3 "
-                                name="search-type-UserManager">
-                            <option value="">بدون فیلتر</option>
-                            @foreach($userList->pluck('type', 'subject')->unique() as $type => $subject)
-                                <option value="{{ $subject }}">{{ $type }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                @endcan
                 <div class="max-w-full overflow-x-auto">
-                    <table class="w-full border-collapse rounded-lg overflow-hidden text-center">
+                    <table class="datatable w-full border-collapse rounded-lg overflow-hidden text-center">
                         <thead>
                         <tr class="bg-gradient-to-r from-blue-400 to-purple-500 items-center text-center text-white">
                             <th class=" px-6 py-3  font-bold ">کد کاربری</th>
                             <th class=" px-6 py-3  font-bold ">مشخصات</th>
                             <th class=" px-3 py-3  font-bold ">نوع کاربری</th>
-                            <th class=" px-3 py-3  font-bold ">فعال/غیرفعال</th>
-                            <th class=" px-3 py-3  font-bold ">نیازمند تغییر رمز عبور</th>
-                            <th class=" px-3 py-3  font-bold ">بازنشانی رمز عبور</th>
+                            <th class=" px-3 py-3  font-bold action">فعال/غیرفعال</th>
+                            <th class=" px-3 py-3  font-bold action">نیازمند تغییر رمز عبور</th>
+                            <th class=" px-3 py-3  font-bold action">بازنشانی رمز عبور</th>
                         </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-300">
                         @foreach ($userList as $user)
+                            @continue(!auth()->user()->hasRole('ادمین کل') and $user->hasRole('ادمین کل'))
                             <tr class="bg-white">
                                 <td class="px-6 py-4">{{ $user->username }}</td>
                                 <td class="px-6 py-4">{{ $user->name . ' ' . $user->family  }}</td>
