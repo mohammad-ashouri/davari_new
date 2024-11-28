@@ -56,8 +56,8 @@ class PermissionsSeeder extends Seeder
         // Inserting the permissions into the database
         Permission::insert($permissions);
 
-        $superAdminRole = Role::create(['name' => 'ادمین کل']);
-        $superAdminRole->givePermissionTo([
+        $createRole = Role::create(['name' => 'ادمین کل']);
+        $createRole->givePermissionTo([
             'telescope',
             'لیست مقادیر اولیه',
 
@@ -73,11 +73,20 @@ class PermissionsSeeder extends Seeder
             'نمایش جزئیات دسترسی',
             'حذف دسترسی',
 
-            'لیست پرسنل',
-            'ایجاد پرسنل',
-            'ویرایش پرسنل',
-            'ویرایش تجهیزات پرسنل',
-            'انتقال تجهیزات پرسنل',
+            'لیست کاربران',
+            'ایجاد کاربر',
+            'ویرایش کاربر',
+            'تغییر وضعیت کاربر',
+            'تغییر وضعیت نیازمند به تغییر رمز عبور',
+            'بازنشانی رمز عبور کاربر',
+            'جستجوی کاربر',
+            'لیست بکاپ دیتابیس',
+            'ایجاد بکاپ دیتابیس',
+        ]);
+
+        $createRole = Role::create(['name' => 'معاون']);
+        $createRole->givePermissionTo([
+            'لیست مقادیر اولیه',
 
             'لیست کاربران',
             'ایجاد کاربر',
@@ -90,11 +99,66 @@ class PermissionsSeeder extends Seeder
             'ایجاد بکاپ دیتابیس',
         ]);
 
+        $createRole = Role::create(['name' => 'مدیر پژوهش']);
+        $createRole->givePermissionTo([
+            'لیست مقادیر اولیه',
+
+            'لیست کاربران',
+            'ایجاد کاربر',
+            'ویرایش کاربر',
+            'تغییر وضعیت کاربر',
+            'تغییر وضعیت نیازمند به تغییر رمز عبور',
+            'بازنشانی رمز عبور کاربر',
+            'جستجوی کاربر',
+            'لیست بکاپ دیتابیس',
+            'ایجاد بکاپ دیتابیس',
+        ]);
+
+        $createRole = Role::create(['name' => 'مدیر اجرایی']);
+        $createRole->givePermissionTo([
+        ]);
+
+//        $createRole = Role::create(['name' => 'ویراستار']);
+//        $createRole->givePermissionTo([
+//        ]);
+//
+//        $createRole = Role::create(['name' => 'طراح']);
+//        $createRole->givePermissionTo([
+//        ]);
+//
+//        $createRole = Role::create(['name' => 'صفحه آرا']);
+//        $createRole->givePermissionTo([
+//        ]);
+
         $role = Role::where('name', 'ادمین کل')->first();
         $users = User::get();
         foreach ($users as $user) {
             $user = User::findOrFail($user->id);
             $user->assignRole([$role->id]);
         }
+
+        $role = Role::where('name', 'مدیر پژوهش')->first();
+        $user = User::find(3);
+        $user->assignRole([$role->id]);
+
+        $role = Role::where('name', 'معاون')->first();
+        $user = User::find(2);
+        $user->assignRole([$role->id]);
+
+        $role = Role::where('name', 'مدیر اجرایی')->first();
+        $user = User::find(4);
+        $user->assignRole([$role->id]);
+
+//        $role = Role::where('name', 'ویراستار')->first();
+//        $user = User::find(5);
+//        $user->assignRole([$role->id]);
+//
+//        $role = Role::where('name', 'طراح')->first();
+//        $user = User::find(6);
+//        $user->assignRole([$role->id]);
+//
+//        $role = Role::where('name', 'صفحه آرا')->first();
+//        $user = User::find(7);
+//        $user->assignRole([$role->id]);
     }
 }

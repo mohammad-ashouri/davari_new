@@ -25,8 +25,5 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         Paginator::useTailwind();
-        View::composer('*', function ($view) {
-            $view->with('brands', Brand::whereStatus(1)->orderBy('name')->get());
-        });
     }
 }
