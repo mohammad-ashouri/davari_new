@@ -56,11 +56,12 @@ class PostFormatController extends Controller
     public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $this->validate($request, [
-            'name' => 'required|unique:post_formats,name',
+            'name' => 'required|unique:post_formats,name,' . $id,
         ]);
 
         $postFormat = PostFormat::findOrFail($id);
         $postFormat->name = $request->input('name');
+        $postFormat->status = $request->input('status');
         $postFormat->editor = auth()->user()->id;
         $postFormat->save();
 
