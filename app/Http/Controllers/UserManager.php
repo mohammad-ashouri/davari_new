@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Catalogs\Building;
+use App\Models\Catalogs\ScientificGroup;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -24,7 +25,8 @@ class UserManager extends Controller
     {
         $userList = User::orderBy('id', 'asc')->paginate(10);
         $allRoles = Role::get();
-        return view('UserManager', compact('userList', 'allRoles'));
+        $groups = ScientificGroup::whereStatus(1)->orderBy('name')->get();
+        return view('UserManager', compact('userList', 'allRoles', 'groups'));
     }
 
     public function ChangeUserActivationStatus(Request $request): \Illuminate\Http\JsonResponse
@@ -93,6 +95,7 @@ class UserManager extends Controller
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255|unique:users',
+            'scientificGroup' => 'required|integer|exists:scientific_groups,id',
             'type' => 'required|exists:roles,id',
         ]);
         if ($validator->fails()) {
@@ -103,6 +106,7 @@ class UserManager extends Controller
         $username = $request->input('username');
         $password = $request->input('password');
         $type = $request->input('type');
+        $scientificGroup = $request->input('scientificGroup');
 
         $lastUserId = User::orderByDesc('id')->first()->id;
 
@@ -112,6 +116,11 @@ class UserManager extends Controller
         $user->family = $family;
         $user->username = $username;
         $user->password = bcrypt($password);
+        if ($type == 5 or $type == 6) {
+            $user->scientific_group = $scientificGroup;
+        } else {
+            $user->scientific_group = null;
+        }
         $user->type = $type;
         $user->subject = Role::findById($type)->name;
         $user->adder = auth()->user()->id;
@@ -126,10 +135,16 @@ class UserManager extends Controller
         $name = $request->input('editedName');
         $family = $request->input('editedFamily');
         $type = $request->input('editedType');
+        $scientificGroup = $request->input('editedScientificGroup');
         $user = User::findOrFail($userID);
         if ($user) {
             $user->name = $name;
             $user->family = $family;
+            if ($type == 5 or $type == 6) {
+                $user->scientific_group = $scientificGroup;
+            } else {
+                $user->scientific_group = null;
+            }
             $user->type = $type;
             $user->subject = Role::findById($type)->name;
         }

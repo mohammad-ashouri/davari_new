@@ -14,8 +14,7 @@ class RoleController extends Controller
     {
         $this->middleware('permission:لیست نقش', ['only' => ['index']]);
         $this->middleware('permission:ایجاد نقش', ['only' => ['create', 'store']]);
-        $this->middleware('permission:ویرایش نقش', ['only' => ['update']]);
-        $this->middleware('permission:نمایش جزئیات نقش', ['only' => ['edit']]);
+        $this->middleware('permission:ویرایش نقش', ['only' => ['edit', 'update']]);
         $this->middleware('permission:حذف نقش', ['only' => ['destroy']]);
     }
 

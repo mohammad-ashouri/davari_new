@@ -324,80 +324,25 @@ $(document).ready(function () {
                 break;
             case "/UserManager":
                 resetFields();
-                //Search In User Manager
-                $('#search-Username-UserManager').on('input', function () {
-                    let inputUsername = $('#search-Username-UserManager').val().trim().toLowerCase();
-                    let type = $('#search-type-UserManager').val();
-                    $.ajax({
-                        url: '/Search', type: 'GET', data: {
-                            username: inputUsername, type: type, work: 'UserManagerSearch'
-                        }, success: function (data) {
-                            let tableBody = $('.w-full.border-collapse.rounded-lg.overflow-hidden.text-center tbody');
-                            tableBody.empty();
-
-                            data.forEach(function (user) {
-                                let row = '<tr class="bg-white"><td class="px-6 py-4">' + user.username + '</td><td class="px-6 py-4">' + user.name + ' ' + user.family + '</td><td class="px-6 py-4">' + user.subject + '</td>';
-                                if (user.active == 1) {
-                                    row += '<td class="px-6 py-4">' + '<button type="submit" data-username="' + user.username + '" class="px-2 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 ASUM" data-active="1">غیرفعال‌سازی</button>';
-                                } else if (user.active == 0) {
-                                    row += '<td class="px-6 py-4">' + '<button type="submit" data-username="' + user.username + '" class="px-2 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 ASUM" data-active="0">فعال‌سازی</button>';
-                                }
-                                row += '</td>';
-                                if (user.ntcp == 1) {
-                                    row += '<td class="px-6 py-4">' + '<button type="submit" data-ntcp-username="' + user.username + '" class="px-2 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 ntcp" data-ntcp="1">می باشد</button>';
-                                } else if (user.ntcp == 0) {
-                                    row += '<td class="px-6 py-4">' + '<button type="submit" data-ntcp-username="' + user.username + '" class="px-2 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 ntcp" data-ntcp="0">نمی باشد</button>';
-                                }
-                                row += '</td>';
-                                row += '<td class="px-6 py-4">' + '<button type="submit" data-rp-username="' + user.username + '" class="px-2 py-2 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 rp">بازنشانی رمز</button>';
-                                row += '</td>';
-                                row += '</tr>';
-                                tableBody.append(row);
-                            });
-                        }, error: function () {
-                            console.log('خطا در ارتباط با سرور');
-                        }
-                    });
-                });
-                $('#search-type-UserManager').on('change', function () {
-                    let inputUsername = $('#search-Username-UserManager').val().trim().toLowerCase();
-                    let type = $('#search-type-UserManager').val();
-                    $.ajax({
-                        url: '/Search', type: 'GET', data: {
-                            username: inputUsername, type: type, work: 'UserManagerSearch'
-                        }, success: function (data) {
-                            let tableBody = $('.w-full.border-collapse.rounded-lg.overflow-hidden.text-center tbody');
-                            tableBody.empty();
-
-                            data.forEach(function (user) {
-                                let row = '<tr class="bg-white"><td class="px-6 py-4">' + user.username + '</td><td class="px-6 py-4">' + user.name + ' ' + user.family + '</td><td class="px-6 py-4">' + user.subject + '</td>';
-                                if (user.active == 1) {
-                                    row += '<td class="px-6 py-4">' + '<button type="submit" data-username="' + user.username + '" class="px-2 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 ASUM" data-active="1">غیرفعال‌سازی</button>';
-                                } else if (user.active == 0) {
-                                    row += '<td class="px-6 py-4">' + '<button type="submit" data-username="' + user.username + '" class="px-2 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 ASUM" data-active="0">فعال‌سازی</button>';
-                                }
-                                row += '</td>';
-                                if (user.ntcp == 1) {
-                                    row += '<td class="px-6 py-4">' + '<button type="submit" data-ntcp-username="' + user.username + '" class="px-2 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 ntcp" data-ntcp="1">می باشد</button>';
-                                } else if (user.ntcp == 0) {
-                                    row += '<td class="px-6 py-4">' + '<button type="submit" data-ntcp-username="' + user.username + '" class="px-2 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 ntcp" data-ntcp="0">نمی باشد</button>';
-                                }
-                                row += '</td>';
-                                row += '<td class="px-6 py-4">' + '<button type="submit" data-rp-username="' + user.username + '" class="px-2 py-2 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 rp">بازنشانی رمز</button>';
-                                row += '</td>';
-                                row += '</tr>';
-                                tableBody.append(row);
-                            });
-                        }, error: function () {
-                            console.log('خطا در ارتباط با سرور');
-                        }
-                    });
-                });
                 $('.absolute.inset-0.bg-gray-500.opacity-75.add').on('click', function () {
                     toggleModal(newUserModal.id)
                 });
                 $('.absolute.inset-0.bg-gray-500.opacity-75.edit').on('click', function () {
                     toggleModal(editUserModal.id)
+                });
+                $('#type').on('change', function () {
+                    if ($(this).val() == 5 || $(this).val() == 6) {
+                        $('.scientificGroupDiv').removeClass('hidden');
+                    } else {
+                        $('.scientificGroupDiv').addClass('hidden');
+                    }
+                });
+                $('#editedType').on('change', function () {
+                    if ($(this).val() == 5 || $(this).val() == 6) {
+                        $('.editedScientificGroupDiv').removeClass('hidden');
+                    } else {
+                        $('.editedScientificGroupDiv').addClass('hidden');
+                    }
                 });
                 //Activation Status In User Manager
                 $(document).on('click', '.ASUM', function (e) {
@@ -593,8 +538,13 @@ $(document).ready(function () {
                                 editedName.value = response.name;
                                 editedFamily.value = response.family;
                                 editedType.value = response.type;
-                                editedBuilding.value = response.building;
-                                editedRoomNumber.value = response.room_number;
+                                if (response.type == 5 || response.type == 6) {
+                                    editedScientificGroup.value = response.scientific_group;
+                                    $('.editedScientificGroupDiv').removeClass('hidden');
+                                    $('.editedScientificGroup').val(response.scientific_group).trigger('change');
+                                } else {
+                                    $('.editedScientificGroupDiv').addClass('hidden');
+                                }
                             }
                         });
                     }

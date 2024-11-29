@@ -16,13 +16,13 @@
                         <div class="mt-4 mb-4 flex items-center">
                             <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="newUserModal">
                                 <div
-                                    class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center  sm:block sm:p-0">
+                                        class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center  sm:block sm:p-0">
                                     <div class="fixed inset-0 transition-opacity" aria-hidden="true">
                                         <div class="absolute inset-0 bg-gray-500 opacity-75 add"></div>
                                     </div>
 
                                     <div
-                                        class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:max-w-[550px]">
+                                            class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:max-w-[550px]">
                                         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                             <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
                                                 تعریف کاربر جدید
@@ -71,6 +71,19 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                                <div class="hidden scientificGroupDiv mb-4">
+                                                    <label for="scientificGroup"
+                                                           class="block text-gray-700 text-sm font-bold mb-2">گروه
+                                                        علمی:</label>
+                                                    <select id="scientificGroup"
+                                                            class=" border rounded-md w-full px-3 py-2"
+                                                            name="scientificGroup">
+                                                        <option value="" disabled selected>انتخاب کنید</option>
+                                                        @foreach($groups as $group)
+                                                            <option value="{{$group->id}}">{{$group->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
@@ -100,13 +113,13 @@
                         <div class="mt-4 mb-4 flex items-center">
                             <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="editUserModal">
                                 <div
-                                    class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center  sm:block sm:p-0">
+                                        class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center  sm:block sm:p-0">
                                     <div class="fixed inset-0 transition-opacity" aria-hidden="true">
                                         <div class="absolute inset-0 bg-gray-500 opacity-75 edit"></div>
                                     </div>
 
                                     <div
-                                        class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:max-w-[550px]">
+                                            class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:max-w-[550px]">
                                         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                             <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
                                                 ویرایش کاربر
@@ -121,8 +134,8 @@
                                                         <option value="" selected disabled>انتخاب کنید</option>
                                                         @foreach($userList as $user)
                                                             <option
-                                                                @continue(!auth()->user()->hasRole('ادمین کل') and $role->name=='ادمین کل')
-                                                                value="{{ $user->id }}">{{ $user->name.' '.$user->family . ' ('.$user->username.')'}}</option>
+                                                                    @continue(!auth()->user()->hasRole('ادمین کل') and $role->name=='ادمین کل')
+                                                                    value="{{ $user->id }}">{{ $user->name.' '.$user->family . ' ('.$user->username.')'}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -156,6 +169,19 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                                <div class="hidden editedScientificGroupDiv mb-4">
+                                                    <label for="editedScientificGroup"
+                                                           class="block text-gray-700 text-sm font-bold mb-2">گروه
+                                                        علمی:</label>
+                                                    <select id="editedScientificGroup"
+                                                            class=" border rounded-md w-full px-3 py-2"
+                                                            name="editedScientificGroup">
+                                                        <option value="" disabled selected>انتخاب کنید</option>
+                                                        @foreach($groups as $group)
+                                                            <option value="{{$group->id}}">{{$group->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
@@ -183,6 +209,7 @@
                             <th class=" px-6 py-3  font-bold ">کد کاربری</th>
                             <th class=" px-6 py-3  font-bold ">مشخصات</th>
                             <th class=" px-3 py-3  font-bold ">نوع کاربری</th>
+                            <th class=" px-3 py-3  font-bold ">گروه علمی</th>
                             <th class=" px-3 py-3  font-bold action">فعال/غیرفعال</th>
                             <th class=" px-3 py-3  font-bold action">نیازمند تغییر رمز عبور</th>
                             <th class=" px-3 py-3  font-bold action">بازنشانی رمز عبور</th>
@@ -200,17 +227,20 @@
                                     @endforeach
                                 </td>
                                 <td class="px-3 py-4">
+                                    {{ $user->scientificGroupInfo?->name }}
+                                </td>
+                                <td class="px-3 py-4">
                                     @can('تغییر وضعیت کاربر')
                                         <button type="submit" data-username="{{ $user->username }}"
-                                            @php
-                                                if ($user->active==1){
-                                                    echo "class='px-2 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 ASUM'";
-                                                    echo "data-active=1";
-                                                }elseif ($user->active==0){
-                                                    echo "class='px-2 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 ASUM'";
-                                                    echo "data-active=0";
-                                                }
-                                            @endphp
+                                                @php
+                                                    if ($user->active==1){
+                                                        echo "class='px-2 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 ASUM'";
+                                                        echo "data-active=1";
+                                                    }elseif ($user->active==0){
+                                                        echo "class='px-2 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 ASUM'";
+                                                        echo "data-active=0";
+                                                    }
+                                                @endphp
                                         >
                                             @if ($user->active==1)
                                                 غیرفعال‌سازی
@@ -229,7 +259,7 @@
                                                 @elseif ($user->ntcp==0)
                                                     class='px-2 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 ntcp'
                                                 data-ntcp='0'
-                                            @endif
+                                                @endif
                                         >
                                             @if ($user->NTCP==1)
                                                 می باشد

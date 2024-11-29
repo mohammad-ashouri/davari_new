@@ -22,7 +22,6 @@ class PermissionsSeeder extends Seeder
             ['name' => 'لیست نقش', 'guard_name' => 'web'],
             ['name' => 'ایجاد نقش', 'guard_name' => 'web'],
             ['name' => 'ویرایش نقش', 'guard_name' => 'web'],
-            ['name' => 'نمایش جزئیات نقش', 'guard_name' => 'web'],
             ['name' => 'حذف نقش', 'guard_name' => 'web'],
 
             ['name' => 'لیست دسترسی', 'guard_name' => 'web'],

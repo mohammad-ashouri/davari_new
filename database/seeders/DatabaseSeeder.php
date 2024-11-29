@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             PermissionsSeeder::class,
             DefaultUsers::class,
             PostFormats::class,
+            ScientificGroups::class,
         ]);
 
     }

@@ -19,12 +19,12 @@ class DefaultUsers extends Seeder
         $password = bcrypt(12345678);
 
         DB::table('users')->insert([
-            ['id' => 1, 'username' => 'admin', 'password' => $password, 'name' => 'Super', 'family' => 'Admin', 'type' => 1, 'subject' => 'ادمین کل', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
-            ['id' => 2, 'username' => 'farajnejad', 'password' => $password, 'name' => 'حسن', 'family' => 'فرج نژاد', 'type' => 2, 'subject' => 'معاون', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
-            ['id' => 3, 'username' => 'mostafavizadeh', 'password' => $password, 'name' => 'حسین', 'family' => 'مصطفوی زاده', 'type' => 3, 'subject' => 'مدیر پژوهش', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
-            ['id' => 4, 'username' => 'helali', 'password' => $password, 'name' => 'ابوالفضل', 'family' => 'هلالی', 'type' => 4, 'subject' => 'مدیر نشر داخلی', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
-            ['id' => 5, 'username' => 'modirgp', 'password' => $password, 'name' => 'مدیر', 'family' => 'گروه علمی', 'type' => 5, 'subject' => 'مدیر گروه علمی', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
-            ['id' => 6, 'username' => 'ozvgp', 'password' => $password, 'name' => 'عضو', 'family' => 'گروه', 'type' => 6, 'subject' => 'عضو گروه', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
+            ['id' => 1, 'username' => 'admin', 'password' => $password, 'name' => 'Super', 'family' => 'Admin', 'scientific_group' => null, 'type' => 1, 'subject' => 'ادمین کل', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
+            ['id' => 2, 'username' => 'farajnejad', 'password' => $password, 'name' => 'حسن', 'family' => 'فرج نژاد', 'scientific_group' => null, 'type' => 2, 'subject' => 'معاون', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
+            ['id' => 3, 'username' => 'mostafavizadeh', 'password' => $password, 'name' => 'حسین', 'family' => 'مصطفوی زاده', 'scientific_group' => null, 'type' => 3, 'subject' => 'مدیر پژوهش', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
+            ['id' => 4, 'username' => 'helali', 'password' => $password, 'name' => 'ابوالفضل', 'family' => 'هلالی', 'scientific_group' => null, 'type' => 4, 'subject' => 'مدیر نشر داخلی', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
+            ['id' => 5, 'username' => 'modirgp', 'password' => $password, 'name' => 'مدیر', 'family' => 'گروه علمی', 'scientific_group' => 1, 'type' => 5, 'subject' => 'مدیر گروه علمی', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
+            ['id' => 6, 'username' => 'ozvgp', 'password' => $password, 'name' => 'عضو', 'family' => 'گروه', 'scientific_group' => 1, 'type' => 6, 'subject' => 'عضو گروه', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
         ]);
 
         $createRole = Role::create(['name' => 'ادمین کل']);
@@ -35,7 +35,6 @@ class DefaultUsers extends Seeder
             'لیست نقش',
             'ایجاد نقش',
             'ویرایش نقش',
-            'نمایش جزئیات نقش',
             'حذف نقش',
 
             'لیست دسترسی',
@@ -68,6 +67,9 @@ class DefaultUsers extends Seeder
         $createRole->givePermissionTo([
             'لیست مقادیر اولیه',
 
+            'لیست نقش',
+            'ویرایش نقش',
+
             'لیست قالب اثر',
             'ایجاد قالب اثر',
             'ویرایش قالب اثر',
@@ -84,14 +86,15 @@ class DefaultUsers extends Seeder
             'تغییر وضعیت کاربر',
             'تغییر وضعیت نیازمند به تغییر رمز عبور',
             'بازنشانی رمز عبور کاربر',
-            'لیست بکاپ دیتابیس',
-            'ایجاد بکاپ دیتابیس',
         ]);
 
         $createRole = Role::create(['name' => 'مدیر پژوهش']);
         $createRole->givePermissionTo([
             'لیست مقادیر اولیه',
 
+            'لیست نقش',
+            'ویرایش نقش',
+
             'لیست قالب اثر',
             'ایجاد قالب اثر',
             'ویرایش قالب اثر',
@@ -108,8 +111,6 @@ class DefaultUsers extends Seeder
             'تغییر وضعیت کاربر',
             'تغییر وضعیت نیازمند به تغییر رمز عبور',
             'بازنشانی رمز عبور کاربر',
-            'لیست بکاپ دیتابیس',
-            'ایجاد بکاپ دیتابیس',
         ]);
 
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Catalogs\Building;
+use App\Models\Catalogs\ScientificGroup;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -50,6 +51,10 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    protected $primaryKey='id';
+    protected $primaryKey = 'id';
 
+    public function scientificGroupInfo()
+    {
+        return $this->belongsTo(ScientificGroup::class, 'scientific_group', 'id');
+    }
 }

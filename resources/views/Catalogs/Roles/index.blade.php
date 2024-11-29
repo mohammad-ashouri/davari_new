@@ -39,7 +39,7 @@
                                     {{$role->users()->count()}}
                                 </td>
                                 <td class="px-6 py-4">
-                                    @can('نمایش جزئیات نقش')
+                                    @can('ویرایش نقش')
                                         <a href="{{ route('Roles.edit',$role->id) }}">
                                             <button type="button" data-id="{{ $role->id }}"
                                                     class="px-4 py-2 mr-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 ReferTypeControl">
