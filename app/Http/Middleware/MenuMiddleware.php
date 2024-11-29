@@ -42,6 +42,12 @@ class MenuMiddleware
                             'permission' => "لیست قالب اثر",
                             'icon' => 'lab la-wpforms',
                         ],
+                        [
+                            'title' => 'گروه علمی',
+                            'link' => '/ScientificGroups',
+                            'permission' => "لیست گروه علمی",
+                            'icon' => 'las la-user-friends',
+                        ],
                     ]
                 ],
                 6 => [

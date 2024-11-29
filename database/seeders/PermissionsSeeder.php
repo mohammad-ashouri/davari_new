@@ -36,11 +36,10 @@ class PermissionsSeeder extends Seeder
             ['name' => 'ویرایش قالب اثر', 'guard_name' => 'web'],
             ['name' => 'حذف قالب اثر', 'guard_name' => 'web'],
 
-            ['name' => 'لیست پرسنل', 'guard_name' => 'web'],
-            ['name' => 'ایجاد پرسنل', 'guard_name' => 'web'],
-            ['name' => 'ویرایش پرسنل', 'guard_name' => 'web'],
-            ['name' => 'ویرایش تجهیزات پرسنل', 'guard_name' => 'web'],
-            ['name' => 'انتقال تجهیزات پرسنل', 'guard_name' => 'web'],
+            ['name' => 'لیست گروه علمی', 'guard_name' => 'web'],
+            ['name' => 'ایجاد گروه علمی', 'guard_name' => 'web'],
+            ['name' => 'ویرایش گروه علمی', 'guard_name' => 'web'],
+            ['name' => 'حذف گروه علمی', 'guard_name' => 'web'],
 
             // Users Manager
             ['name' => 'لیست کاربران', 'guard_name' => 'web'],

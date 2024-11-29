@@ -3,6 +3,7 @@
 use App\Http\Controllers\Catalogs\PermissionController;
 use App\Http\Controllers\Catalogs\PostFormatController;
 use App\Http\Controllers\Catalogs\RoleController;
+use App\Http\Controllers\Catalogs\ScientificGroupController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Reports\DatabaseBackupController;
@@ -52,6 +53,7 @@ Route::middleware(['auth', MenuMiddleware::class])->group(function () {
 
         //Catalogs
         Route::resource('PostFormats', PostFormatController::class);
+        Route::resource('ScientificGroups', ScientificGroupController::class);
 
         //User Manager
         Route::get('/UserManager', [UserManager::class, 'index'])->name('UserManager');
@@ -65,9 +67,6 @@ Route::middleware(['auth', MenuMiddleware::class])->group(function () {
         //Role Controller
         Route::resource('/Roles', RoleController::class);
         Route::resource('/Permissions', PermissionController::class);
-
-        //Personnels
-        Route::resource('/Personnels', PersonnelController::class);
 
         //Reports
         Route::prefix('BackupDatabase')->group(function () {
