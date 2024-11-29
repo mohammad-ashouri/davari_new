@@ -24,8 +24,7 @@ return new class extends Migration {
             $table->tinyInteger('active')->default(1);
             $table->tinyInteger('ntcp')->default(0)->comment('Needs To Change Password');
             $table->text('user_image')->nullable();
-            $table->unsignedBigInteger('building')->nullable();
-            $table->string('room_number')->nullable();
+            $table->unsignedBigInteger('scientific_group')->nullable();
             $table->rememberToken();
             $table->unsignedBigInteger('adder')->nullable();
             $table->foreign('adder')->references('id')->on('users');
