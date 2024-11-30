@@ -40,6 +40,11 @@ class PermissionsSeeder extends Seeder
             ['name' => 'ویرایش گروه علمی', 'guard_name' => 'web'],
             ['name' => 'حذف گروه علمی', 'guard_name' => 'web'],
 
+            //Internal Publication
+            ['name' => 'منوی نشر داخلی', 'guard_name' => 'web'],
+            ['name' => 'نشر داخلی - مدیریت آثار', 'guard_name' => 'web'],
+
+
             // Users Manager
             ['name' => 'لیست کاربران', 'guard_name' => 'web'],
             ['name' => 'ایجاد کاربر', 'guard_name' => 'web'],

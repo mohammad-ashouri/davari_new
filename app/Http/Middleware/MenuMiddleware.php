@@ -50,6 +50,20 @@ class MenuMiddleware
                         ],
                     ]
                 ],
+                2 => [
+                    'title' => 'نشر داخلی',
+                    'link' => '',
+                    'permission' => "منوی نشر داخلی",
+                    'icon' => 'las la-book',
+                    'childs' => [
+                        [
+                            'title' => 'مدیریت آثار',
+                            'link' => '/InternalPublication/Posts',
+                            'permission' => "نشر داخلی - مدیریت آثار",
+                            'icon' => 'las la-user-friends',
+                        ],
+                    ]
+                ],
                 6 => [
                     'title' => 'مدیریت پرسنل',
                     'link' => '/Personnels',
