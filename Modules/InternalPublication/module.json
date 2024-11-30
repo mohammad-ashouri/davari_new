@@ -1,0 +1,11 @@
+{
+    "name": "InternalPublication",
+    "alias": "internalpublication",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\InternalPublication\\Providers\\InternalPublicationServiceProvider"
+    ],
+    "files": []
+}
