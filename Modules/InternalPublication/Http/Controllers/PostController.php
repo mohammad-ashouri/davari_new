@@ -6,15 +6,24 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-class InternalPublicationController extends Controller
+class PostController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:نشر داخلی - مدیریت آثار', ['only' => ['index']]);
+        $this->middleware('permission:نشر داخلی - مدیریت آثار - اثر جدید', ['only' => ['create', 'store']]);
+        $this->middleware('permission:نشر داخلی - مدیریت آثار - ویرایش اثر', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:نشر داخلی - مدیریت آثار - حذف اثر', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
     public function index()
     {
-        return view('internalpublication::posts.index');
+
+        return view('internal-publication::posts.index');
     }
 
     /**
@@ -23,7 +32,7 @@ class InternalPublicationController extends Controller
      */
     public function create()
     {
-        return view('internalpublication::create');
+        return view('internal-publication::create');
     }
 
     /**
@@ -43,7 +52,7 @@ class InternalPublicationController extends Controller
      */
     public function show($id)
     {
-        return view('internalpublication::show');
+        return view('internal-publication::show');
     }
 
     /**
@@ -53,7 +62,7 @@ class InternalPublicationController extends Controller
      */
     public function edit($id)
     {
-        return view('internalpublication::edit');
+        return view('internal-publication::edit');
     }
 
     /**

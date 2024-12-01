@@ -15,7 +15,7 @@ class InternalPublicationServiceProvider extends ServiceProvider
     /**
      * @var string $moduleNameLower
      */
-    protected $moduleNameLower = 'internalpublication';
+    protected $moduleNameLower = 'internal-publication';
 
     /**
      * Boot the application events.

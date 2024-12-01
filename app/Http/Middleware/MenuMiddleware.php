@@ -60,7 +60,7 @@ class MenuMiddleware
                             'title' => 'مدیریت آثار',
                             'link' => '/internal-publication/posts',
                             'permission' => "نشر داخلی - مدیریت آثار",
-                            'icon' => 'las la-user-friends',
+                            'icon' => 'las la-mail-bulk',
                         ],
                     ]
                 ],
