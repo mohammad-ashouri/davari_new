@@ -4,14 +4,14 @@
 @section('content')
     <main class="flex-1 bg-gray-100 py-6 px-8">
         <div class="mx-auto lg:mr-72">
-            <h1 class="text-2xl font-bold mb-4">تعاریف اولیه - مدیریت بر اطلاعات گروه علمی</h1>
+            <h1 class="text-2xl font-bold mb-4">تعاریف اولیه - مدیریت بر اطلاعات قالب اثر</h1>
             @include('layouts.components.errors')
             @include('layouts.components.success')
             <div class="bg-white rounded shadow p-6 flex flex-col ">
-                @can('ایجاد گروه علمی')
-                    <a type="button" href="{{route('ScientificGroups.create')}}"
+                @can('ایجاد قالب اثر')
+                    <a type="button" href="{{route('post-formats.create')}}"
                        class="px-4 py-2 bg-green-500 w-40 mb-2 text-center text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300">
-                        گروه علمی جدید
+                        قالب اثر جدید
                     </a>
                 @endcan
                 @if(empty($catalogs) or $catalogs->isEmpty())
@@ -65,8 +65,8 @@
                                     {{ Jalalian::fromDateTime($item->updated_at)->format('H:i:s Y/m/d') }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    @can('ویرایش گروه علمی')
-                                        <a href="{{ route('ScientificGroups.edit',$item->id) }}">
+                                    @can('ویرایش قالب اثر')
+                                        <a href="{{ route('post-formats.edit',$item->id) }}">
                                             <button type="button" data-id="{{ $item->id }}"
                                                     class="px-4 py-2 mr-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 ReferTypeControl">
                                                 ویرایش

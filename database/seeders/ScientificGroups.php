@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Catalogs\ScientificGroup;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Modules\Catalog\Entities\ScientificGroup;
 
 class ScientificGroups extends Seeder
 {

@@ -38,13 +38,13 @@ class MenuMiddleware
                         ],
                         [
                             'title' => 'قالب اثر',
-                            'link' => '/PostFormats',
+                            'link' => '/catalog/post-formats',
                             'permission' => "لیست قالب اثر",
                             'icon' => 'lab la-wpforms',
                         ],
                         [
                             'title' => 'گروه علمی',
-                            'link' => '/ScientificGroups',
+                            'link' => '/catalog/scientific-groups',
                             'permission' => "لیست گروه علمی",
                             'icon' => 'las la-user-friends',
                         ],
@@ -58,7 +58,7 @@ class MenuMiddleware
                     'childs' => [
                         [
                             'title' => 'مدیریت آثار',
-                            'link' => '/InternalPublication/Posts',
+                            'link' => '/internal-publication/posts',
                             'permission' => "نشر داخلی - مدیریت آثار",
                             'icon' => 'las la-user-friends',
                         ],

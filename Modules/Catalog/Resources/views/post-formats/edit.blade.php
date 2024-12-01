@@ -2,26 +2,38 @@
 @section('content')
     <main class="flex-1 bg-gray-100 py-6 px-8">
         <div class="mx-auto lg:mr-72">
-            <h1 class="text-2xl font-bold mb-4">ایجاد گروه علمی</h1>
+            <h1 class="text-2xl font-bold mb-4">جزئیات و ویرایش قالب اثر</h1>
             @include('layouts.components.errors')
             <div class="bg-white rounded shadow flex flex-col ">
-                {{ html()->form('POST')->route('ScientificGroups.store')->acceptsFiles()->id('create-catalog')->open() }}
+                {{ html()->form('PATCH')->route('post-formats.update',$catalog->id)->acceptsFiles()->id('edit-catalog')->open() }}
                 <div class="bg-white rounded shadow flex flex-col p-4">
-                    <div class="grid gap-6 mb-6 md:grid-cols-3">
+                    <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
                             <label for="name"
                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">نام </label>
-                            <input type="text" id="name" name="name" value="{{ old('name') }}"
+                            <input type="text" id="name" name="name" value="{{ $catalog->name }}"
                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                    placeholder="" required>
                         </div>
+                        <div>
+                            <label for="status"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">وضعیت</label>
+                            <select name="status"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    required>
+                                <option value="1" @selected($catalog->status)>فعال</option>
+                                <option value="0" @selected(!$catalog->status)>غیر فعال</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
+
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    @can('ایجاد گروه علمی')
+                    @can('ویرایش قالب اثر')
+                        <input type="hidden" name="id" value="{{ $catalog->id }}">
                         <button type="submit"
                                 class="px-4 py-2 mr-3 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300">
-                            ایجاد گروه علمی
+                            ویرایش قالب اثر
                         </button>
                     @endcan
                     <button id="backward_page" type="button"

@@ -1,3 +1,5 @@
+//Catalogs
+
 <?php
 
 /*
@@ -13,6 +15,7 @@
 
 use Modules\InternalPublication\Http\Controllers\InternalPublicationController;
 
-Route::prefix('internal-publication')->group(function() {
-    Route::get('/posts',[InternalPublicationController::class,'index'] );
+Route::prefix('catalog')->group(function() {
+    Route::resource('post-formats', PostFormatController::class);
+    Route::resource('scientific-groups', ScientificGroupController::class);
 });

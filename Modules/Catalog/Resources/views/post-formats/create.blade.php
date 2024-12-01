@@ -5,7 +5,7 @@
             <h1 class="text-2xl font-bold mb-4">ایجاد قالب اثر</h1>
             @include('layouts.components.errors')
             <div class="bg-white rounded shadow flex flex-col ">
-                {{ html()->form('POST')->route('PostFormats.store')->acceptsFiles()->id('create-catalog')->open() }}
+                {{ html()->form('POST')->route('post-formats.store')->acceptsFiles()->id('create-catalog')->open() }}
                 <div class="bg-white rounded shadow flex flex-col p-4">
                     <div class="grid gap-6 mb-6 md:grid-cols-3">
                         <div>

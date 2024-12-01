@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Catalogs;
+namespace Modules\Catalog\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Catalogs\ScientificGroup;
 use Illuminate\Http\Request;
+use Modules\Catalog\Entities\ScientificGroup;
 
 class ScientificGroupController extends Controller
 {
@@ -19,12 +19,12 @@ class ScientificGroupController extends Controller
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $catalogs = ScientificGroup::orderBy('name', 'asc')->get();
-        return view('Catalogs.ScientificGroups.index', compact('catalogs'));
+        return view('Catalog::scientific-groups.index', compact('catalogs'));
     }
 
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        return view('Catalogs.ScientificGroups.create');
+        return view('Catalog::scientific-groups.create');
     }
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
@@ -35,22 +35,15 @@ class ScientificGroupController extends Controller
 
         $role = ScientificGroup::create(['name' => $request->input('name'), 'adder' => auth()->user()->id]);
 
-        return redirect()->route('ScientificGroups.index')
+        return redirect()->route('scientific-groups.index')
             ->with('success', 'گروه علمی جدید با موفقیت ایجاد شد.');
-    }
-
-    public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
-    {
-        $catalog = ScientificGroup::firstOrFail($id);
-
-        return view('Catalogs.ScientificGroups.show', compact('catalog'));
     }
 
     public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $catalog = ScientificGroup::findOrFail($id);
 
-        return view('Catalogs.ScientificGroups.edit', compact('catalog'));
+        return view('Catalog::scientific-groups.edit', compact('catalog'));
     }
 
     public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
@@ -65,7 +58,7 @@ class ScientificGroupController extends Controller
         $postFormat->editor = auth()->user()->id;
         $postFormat->save();
 
-        return redirect()->route('ScientificGroups.index')
+        return redirect()->route('scientific-groups.index')
             ->with('success', 'نقش کاربری با موفقیت ویرایش شد.');
     }
 }

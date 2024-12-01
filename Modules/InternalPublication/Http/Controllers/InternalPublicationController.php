@@ -14,7 +14,7 @@ class InternalPublicationController extends Controller
      */
     public function index()
     {
-        return view('internalpublication::index');
+        return view('internalpublication::posts.index');
     }
 
     /**

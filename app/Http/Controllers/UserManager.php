@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Catalogs\Building;
-use App\Models\Catalogs\ScientificGroup;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Modules\Catalog\Entities\ScientificGroup;
 use Spatie\Permission\Models\Role;
 
 class UserManager extends Controller

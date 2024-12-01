@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Controllers\Catalogs\PermissionController;
-use App\Http\Controllers\Catalogs\PostFormatController;
 use App\Http\Controllers\Catalogs\RoleController;
-use App\Http\Controllers\Catalogs\ScientificGroupController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Reports\DatabaseBackupController;
@@ -13,6 +11,8 @@ use App\Http\Middleware\NTCPMiddleware;
 use App\Http\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Modules\Catalog\Http\Controllers\PostFormatController;
+use Modules\Catalog\Http\Controllers\ScientificGroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,10 +50,6 @@ Route::middleware(['auth', MenuMiddleware::class])->group(function () {
 
     Route::middleware(NTCPMiddleware::class)->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-        //Catalogs
-        Route::resource('PostFormats', PostFormatController::class);
-        Route::resource('ScientificGroups', ScientificGroupController::class);
 
         //User Manager
         Route::get('/UserManager', [UserManager::class, 'index'])->name('UserManager');

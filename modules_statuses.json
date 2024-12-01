@@ -1,3 +1,5 @@
 {
-    "InternalPublication": true
+    "InternalPublication": true,
+    "Catalogs": true,
+    "Catalog": true
 }
