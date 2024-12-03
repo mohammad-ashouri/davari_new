@@ -2,9 +2,13 @@
 
 namespace Modules\InternalPublication\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Catalog\Entities\PostFormat;
+use Modules\Catalog\Entities\ScientificGroup;
+use Modules\InternalPublication\Entities\Post;
 
 class PostController extends Controller
 {
@@ -22,8 +26,8 @@ class PostController extends Controller
      */
     public function index()
     {
-
-        return view('internal-publication::posts.index');
+        $posts = Post::orderByDesc('updated_at')->get();
+        return view('internal-publication::posts.index', compact('posts'));
     }
 
     /**
@@ -32,7 +36,12 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('internal-publication::create');
+        $scientificGroups = ScientificGroup::get();
+        $postFormats = PostFormat::get();
+        $authors = User::whereHas('roles', function ($query) {
+            $query->where('name', 'عضو گروه');
+        })->orderBy('family')->get();
+        return view('internal-publication::posts.create', compact('scientificGroups', 'postFormats', 'authors'));
     }
 
     /**
