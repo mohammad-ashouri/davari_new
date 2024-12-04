@@ -14,7 +14,7 @@
                         اثر جدید
                     </a>
                 @endcan
-                @if(empty($catalogs) or $catalogs->isEmpty())
+                @if(empty($posts) or $posts->isEmpty())
                     <div role="alert" class="alert alert-info">
                         <i style="font-size: 20px" class="las la-info-circle"></i>
                         <span>اطلاعاتی یافت نشد!</span>
@@ -23,9 +23,11 @@
                     <table class="datatable w-full border-collapse rounded-lg overflow-hidden text-center datasheet">
                         <thead>
                         <tr class="bg-gradient-to-r from-blue-400 to-purple-500 items-center text-center text-white">
-                            <th class="px-6 py-3  font-bold ">ردیف</th>
-                            <th class="px-6 py-3  font-bold ">عنوان</th>
-                            <th class="px-6 py-3  font-bold ">وضعیت</th>
+                            <th class="px-6 py-3  font-bold ">کد</th>
+                            <th class="px-6 py-3  font-bold ">نام</th>
+                            <th class="px-6 py-3  font-bold ">قالب اثر</th>
+                            <th class="px-6 py-3  font-bold ">گروه علمی</th>
+                            <th class="px-6 py-3  font-bold ">پدید آورنده</th>
                             <th class="px-6 py-3  font-bold ">کاربر ثبت کننده</th>
                             <th class="px-6 py-3  font-bold ">تاریخ ثبت</th>
                             <th class="px-6 py-3  font-bold ">کاربر ویرایش کننده</th>
@@ -34,21 +36,20 @@
                         </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-300">
-                        @foreach ($catalogs as $item)
+                        @foreach ($posts as $item)
                             <tr class="bg-white">
-                                <td class="px-6 py-4">{{ $loop->iteration }}</td>
+                                <td class="px-6 py-4">{{ $item->id }}</td>
                                 <td class="px-6 py-4">
-                                    {{ $item->name }}
+                                    {{ $item->title }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    @switch($item->status)
-                                        @case(1)
-                                            فعال
-                                            @break
-                                        @case(0)
-                                            غیر فعال
-                                            @break
-                                    @endswitch
+                                    {{ $item->postFormat->name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $item->scientificGroup->name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $item->authorInfo->name }} {{ $item->authorInfo->family }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $item->adderInfo->name }} {{ $item->adderInfo->family }}
@@ -62,11 +63,13 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ Jalalian::fromDateTime($item->updated_at)->format('H:i:s Y/m/d') }}
+                                    @if($item->editorInfo!=null)
+                                        {{ Jalalian::fromDateTime($item->updated_at)->format('H:i:s Y/m/d') }}
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4">
                                     @can('نشر داخلی - مدیریت آثار - ویرایش اثر')
-                                        <a href="{{ route('scientific-groups.edit',$item->id) }}">
+                                        <a href="{{ route('posts.edit',$item->id) }}">
                                             <button type="button" data-id="{{ $item->id }}"
                                                     class="px-4 py-2 mr-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 ReferTypeControl">
                                                 ویرایش

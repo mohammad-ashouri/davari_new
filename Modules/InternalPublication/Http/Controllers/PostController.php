@@ -4,6 +4,8 @@ namespace Modules\InternalPublication\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Catalog\Entities\PostFormat;
@@ -12,6 +14,8 @@ use Modules\InternalPublication\Entities\Post;
 
 class PostController extends Controller
 {
+    use ValidatesRequests;
+
     function __construct()
     {
         $this->middleware('permission:نشر داخلی - مدیریت آثار', ['only' => ['index']]);
@@ -47,11 +51,35 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return Renderable
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|string|max:255',
+            'author' => 'required|integer|exists:users,id',
+            'scientific_group' => 'required|integer|exists:scientific_groups,id',
+            'post_format' => 'required|integer|exists:post_formats,id',
+            'description' => 'required|string',
+            'post_file' => 'required|file|mimes:pdf,doc,docx',
+        ]);
+
+        $post = Post::create([
+            'title' => $request->title,
+            'author' => $request->author,
+            'scientific_group' => $request->scientific_group,
+            'post_format' => $request->post_format,
+            'description' => $request->description,
+            'adder' => auth()->user()->id,
+        ]);
+
+        $path = $request->file('post_file')->store('modules/internal_publications/posts/' . $post->id);
+
+        if ($post and $path) {
+            return redirect()->route('posts.index')->with('success', 'اثر با موفقیت ایجاد شد.');
+        }
+        $post->delete();
+        return redirect()->back()->withErrors(['errors' => 'خطا در ایجاد اثر']);
     }
 
     /**
@@ -71,18 +99,44 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        return view('internal-publication::edit');
+        $scientificGroups = ScientificGroup::get();
+        $postFormats = PostFormat::get();
+        $authors = User::whereHas('roles', function ($query) {
+            $query->where('name', 'عضو گروه');
+        })->orderBy('family')->get();
+        $post = Post::findOrFail($id);
+        return view('internal-publication::posts.edit', compact('post', 'scientificGroups', 'postFormats', 'authors'));
     }
 
     /**
      * Update the specified resource in storage.
      * @param Request $request
      * @param int $id
-     * @return Renderable
+     * @return RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'id' => 'required|integer|exists:posts,id',
+            'title' => 'required|string|max:255',
+            'author' => 'required|integer|exists:users,id',
+            'scientific_group' => 'required|integer|exists:scientific_groups,id',
+            'post_format' => 'required|integer|exists:post_formats,id',
+            'description' => 'required|text',
+        ]);
+        $post = Post::findOrFail($id)->update([
+            'title' => $request->title,
+            'author' => $request->author,
+            'scientific_group' => $request->scientific_group,
+            'post_format' => $request->post_format,
+            'description' => $request->description,
+            'adder' => auth()->user()->id,
+        ]);
+
+        if ($post) {
+            return redirect()->route('posts.index')->with('success', 'اثر با موفقیت ویرایش شد.');
+        }
+        return redirect()->back()->withErrors(['errors' => 'خطا در ویرایش اثر']);
     }
 
     /**

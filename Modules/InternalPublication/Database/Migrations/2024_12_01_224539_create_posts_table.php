@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreign('scientific_group')->references('id')->on('scientific_groups');
             $table->unsignedBigInteger('post_format');
             $table->foreign('post_format')->references('id')->on('post_formats');
+            $table->text('description')->nullable();
             $table->unsignedBigInteger('adder')->nullable();
             $table->foreign('adder')->references('id')->on('users');
             $table->unsignedBigInteger('editor')->nullable();

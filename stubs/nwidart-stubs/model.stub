@@ -4,15 +4,29 @@ namespace $NAMESPACE$;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\User;
 
 class $CLASS$ extends Model
 {
-    use HasFactory;
+    use SoftDeletes;
 
-    protected $fillable = $FILLABLE$;
-    
-    protected static function newFactory()
+    protected $table = "";
+    protected $fillable = [
+        'adder',
+        'editor',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+    public function adderInfo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return \$MODULE_NAMESPACE$\$MODULE$\Database\factories\$NAME$Factory::new();
+        return $this->belongsTo(User::class, 'adder', 'id');
+    }
+
+    public function editorInfo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'editor', 'id');
     }
 }
