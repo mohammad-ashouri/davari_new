@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Catalog\Entities\PostFormat;
 use Modules\Catalog\Entities\ScientificGroup;
+use Modules\File\Entities\File;
 use Modules\InternalPublication\Entities\Post;
 
 class PostController extends Controller
@@ -60,7 +61,7 @@ class PostController extends Controller
             'author' => 'required|integer|exists:users,id',
             'scientific_group' => 'required|integer|exists:scientific_groups,id',
             'post_format' => 'required|integer|exists:post_formats,id',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'post_file' => 'required|file|mimes:pdf,doc,docx',
         ]);
 
@@ -73,9 +74,17 @@ class PostController extends Controller
             'adder' => auth()->user()->id,
         ]);
 
-        $path = $request->file('post_file')->store('modules/internal_publications/posts/' . $post->id);
+        $path = $request->file('post_file')->store('public/internal_publications/posts/' . $post->id);
+        $file = File::create([
+            'module' => 'internal_publication',
+            'part' => 'post',
+            'title' => 'init',
+            'p_id' => $post->id,
+            'src' => $path,
+            'adder' => auth()->user()->id,
+        ]);
 
-        if ($post and $path) {
+        if ($post and $path and $file) {
             return redirect()->route('posts.index')->with('success', 'اثر با موفقیت ایجاد شد.');
         }
         $post->delete();

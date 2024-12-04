@@ -18,6 +18,7 @@ class Post extends Model
         'author',
         'scientific_group',
         'post_format',
+        'description',
         'adder',
         'editor',
         'created_at',
