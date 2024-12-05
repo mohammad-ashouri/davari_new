@@ -283,11 +283,6 @@
                         </tbody>
                     </table>
                 </div>
-
-                <div class="mt-4 flex justify-center" id="laravel-next-prev">
-                    {{ $userList->links() }}
-                </div>
-
             </div>
 
         </div>
