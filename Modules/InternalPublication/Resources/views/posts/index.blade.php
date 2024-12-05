@@ -71,11 +71,17 @@
                                     @can('نشر داخلی - مدیریت آثار - ویرایش اثر')
                                         <a href="{{ route('posts.edit',$item->id) }}">
                                             <button type="button" data-id="{{ $item->id }}"
-                                                    class="px-4 py-2 mr-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 ReferTypeControl">
+                                                    class="px-4 py-2 mr-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">
                                                 ویرایش
                                             </button>
                                         </a>
                                     @endcan
+                                    <a href="{{ Storage::url($item->getInitFile->src) }}">
+                                        <button type="button"
+                                                class="px-4 py-2 mr-3 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring focus:border-gray-300">
+                                            دانلود فایل اصلی
+                                        </button>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

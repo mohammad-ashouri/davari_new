@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Catalog\Entities\PostFormat;
 use Modules\Catalog\Entities\ScientificGroup;
+use Modules\File\Entities\File;
 
 class Post extends Model
 {
@@ -50,5 +51,13 @@ class Post extends Model
     public function editorInfo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'editor', 'id');
+    }
+
+    public function getInitFile(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(File::class, 'id', 'p_id')
+            ->where('module', 'internal_publication')
+            ->where('part', 'post')
+            ->where('title', 'init');
     }
 }
