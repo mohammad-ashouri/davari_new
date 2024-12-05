@@ -15,4 +15,5 @@ use Modules\InternalPublication\Http\Controllers\PostController;
 
 Route::prefix('internal-publication')->group(function () {
     Route::resource('/posts', PostController::class);
+    Route::get('/posts/history/{post}', [PostController::class,'history'])->name('posts.history');
 });

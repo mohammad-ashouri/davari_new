@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('post_format');
             $table->foreign('post_format')->references('id')->on('post_formats');
             $table->text('description')->nullable();
-            $table->string('status')->default('بدون وضعیت');
+            $table->string('status')->default('ارسال به مدیر پژوهش');
             $table->unsignedBigInteger('adder')->nullable();
             $table->foreign('adder')->references('id')->on('users');
             $table->unsignedBigInteger('editor')->nullable();

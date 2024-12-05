@@ -45,6 +45,7 @@ class PermissionsSeeder extends Seeder
             ['name' => 'نشر داخلی - مدیریت آثار', 'guard_name' => 'web'],
             ['name' => 'نشر داخلی - مدیریت آثار - اثر جدید', 'guard_name' => 'web'],
             ['name' => 'نشر داخلی - مدیریت آثار - ویرایش اثر', 'guard_name' => 'web'],
+            ['name' => 'نشر داخلی - مدیریت آثار - نمایش تاریخچه', 'guard_name' => 'web'],
             ['name' => 'نشر داخلی - مدیریت آثار - حذف اثر', 'guard_name' => 'web'],
 
 

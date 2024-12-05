@@ -1,41 +1,50 @@
-<div class="grid grid-cols-3 px-3  py-4 gap-2">
+@props(['post'])
+<div class="grid grid-cols-3 w-full px-3 space-x-1 py-4 gap-2">
     @php
         $roles = auth()->user()->getRoleNames()->toArray();
     @endphp
 
-    @if(array_intersect(['مدیر پژوهش', 'معاون', 'ادمین کل'], $roles))
-        <button type="button" data-id="{{ $postId }}"
+    @if(array_intersect(['مدیر پژوهش', 'معاون', 'ادمین کل'], $roles) and $post->status=='ارسال به مدیر پژوهش')
+        <button type="button" data-id="{{ $post->id }}"
                 class="w-full px-2 py-1 bg-green-500 text-md-center text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-green-300 send-to-internal-publication-manager">
             <i class="las la-share" style="font-size: 20px"></i>
-             نشر داخلی
+            نشر داخلی
         </button>
-        <button type="button" data-id="{{ $postId }}"
+        <button type="button" data-id="{{ $post->id }}"
                 class="w-full px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300 send-to-group-manager">
             <i class="las la-share" style="font-size: 20px"></i>
-             مدیر گروه
+            مدیر گروه
         </button>
     @endif
 
-    @if(array_intersect(['مدیر نشر داخلی', 'ادمین کل'], $roles))
-        <button type="button" data-id="{{ $postId }}"
+    @if(array_intersect(['مدیر نشر داخلی', 'ادمین کل'], $roles) and $post->status=='ارسال به مدیر نشر داخلی')
+        <button type="button" data-id="{{ $post->id }}"
                 class="w-full px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 send-to-research-manager">
             <i class="las la-share" style="font-size: 20px"></i>
-             مدیر پژوهش
+            مدیر پژوهش
         </button>
-        <button type="button" data-id="{{ $postId }}"
+        <button type="button" data-id="{{ $post->id }}"
                 class="w-full px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-green-300 send-to-editor">
             <i class="las la-share" style="font-size: 20px"></i>
-             ویراستار
+            ویراستار
         </button>
-        <button type="button" data-id="{{ $postId }}"
+        <button type="button" data-id="{{ $post->id }}"
                 class="w-full px-2 py-1 bg-yellow-400 text-white rounded-md hover:bg-yellow-600 focus:outline-none focus:ring focus:border-yellow-300 send-to-designer">
             <i class="las la-share" style="font-size: 20px"></i>
-             طراح
+            طراح
         </button>
-        <button type="button" data-id="{{ $postId }}"
+        <button type="button" data-id="{{ $post->id }}"
                 class="w-full px-2 py-1 bg-purple-500 text-white rounded-md hover:bg-purple-600 focus:outline-none focus:ring focus:border-purple-300 send-to-layout-designer">
             <i class="las la-share" style="font-size: 20px"></i>
-             صفحه آرا
+            صفحه آرا
+        </button>
+    @endif
+
+    @if(array_intersect(['صفحه آرا','طراح','ویراستار', 'ادمین کل'], $roles) and ($post->status=='ارسال به ویراستار' or $post->status=='ارسال به صفحه آرا' or $post->status=='ارسال به طراح'))
+        <button type="button" data-id="{{ $post->id }}"
+                class="w-full px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 send-to-research-manager">
+            <i class="las la-share" style="font-size: 20px"></i>
+            مدیر پژوهش
         </button>
     @endif
 </div>

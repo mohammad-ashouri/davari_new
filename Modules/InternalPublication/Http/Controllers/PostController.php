@@ -3,14 +3,18 @@
 namespace Modules\InternalPublication\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Catalog\Entities\PostFormat;
 use Modules\Catalog\Entities\ScientificGroup;
 use Modules\File\Entities\File;
+use Modules\InternalPublication\Entities\InternalPublicationPostMovementHistory;
 use Modules\InternalPublication\Entities\Post;
 
 class PostController extends Controller
@@ -161,5 +165,16 @@ class PostController extends Controller
     public function movePost(Request $request)
     {
 
+    }
+
+    /**
+     * Getting movements history
+     * @param Post $post
+     * @return View
+     */
+    public function history(Post $post)
+    {
+        $movements = InternalPublicationPostMovementHistory::where('p_id', $post->id)->get();
+        return view('internal-publication::posts.history', compact('post','movements'));
     }
 }
