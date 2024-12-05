@@ -32,6 +32,7 @@
                             <th class="px-6 py-3  font-bold ">تاریخ ثبت</th>
                             <th class="px-6 py-3  font-bold ">کاربر ویرایش کننده</th>
                             <th class="px-6 py-3  font-bold ">تاریخ ویرایش</th>
+                            <th class="px-6 py-3  font-bold ">وضعیت</th>
                             <th class="px-6 py-3  font-bold action">عملیات</th>
                         </tr>
                         </thead>
@@ -68,6 +69,9 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">
+                                    {{ $item->status }}
+                                </td>
+                                <td class="px-6 py-4">
                                     @can('نشر داخلی - مدیریت آثار - ویرایش اثر')
                                         <a href="{{ route('posts.edit',$item->id) }}">
                                             <button type="button" data-id="{{ $item->id }}"
@@ -82,6 +86,8 @@
                                             دانلود فایل اصلی
                                         </button>
                                     </a>
+                                    <hr>
+                                    <x-internal-publication::posts.get-post-index-buttons postId="{{ $item->id }}"/>
                                 </td>
                             </tr>
                         @endforeach

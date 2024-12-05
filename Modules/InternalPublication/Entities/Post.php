@@ -20,6 +20,7 @@ class Post extends Model
         'scientific_group',
         'post_format',
         'description',
+        'status',
         'adder',
         'editor',
         'created_at',

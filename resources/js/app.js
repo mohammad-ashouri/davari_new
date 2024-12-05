@@ -254,7 +254,86 @@ $(document).ready(function () {
 
     let pathname = window.location.pathname;
 
-    if (pathname.includes('Personnels')) {
+    if (pathname.includes('internal-publication')) {
+        $('.send-to-internal-publication-manager,.send-to-group-manager,.send-to-research-manager,.send-to-editor,.send-to-designer,.send-to-layout-designer').click(function () {
+            let title = null;
+            if ($(this).hasClass('send-to-internal-publication-manager')) {
+                title = 'ارسال به نشر داخلی';
+            } else if ($(this).hasClass('send-to-group-manager')) {
+                title = 'ارسال به مدیر گروه';
+            } else if ($(this).hasClass('send-to-research-manager')) {
+                title = 'ارسال به مدیر پژوهش';
+            } else if ($(this).hasClass('send-to-editor')) {
+                title = 'ارسال به ویراستار';
+            } else if ($(this).hasClass('send-to-designer')) {
+                title = 'ارسال به طراح';
+            } else if ($(this).hasClass('send-to-layout-designer')) {
+                title = 'ارسال به صفحه آرا';
+            }
+
+            const postId = $(this).data('id');
+            Swal.fire({
+                title: title,
+                html: `
+        <form id="uploadForm" class="text-right" enctype="multipart/form-data">
+        <div>
+        <label for="description"
+               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">توضیحات
+            (اختیاری)</label>
+        <textarea
+            rows="6"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            id="description" name="description"></textarea>
+        </div>
+        <div class=" mt-3">
+          <label for="post_file"
+               class="text-gray-900 text-sm font-bold whitespace-nowrap">فایل
+          ضمیمه(اختیاری):</label>
+          <input id="post_file" name="post_file" type="file"
+               accept=".pdf, .doc, .docx"
+               class="border border-gray-300 px-3 py-2 w-full rounded-lg focus:ring-blue-500 focus:border-blue-500">
+               <div class="mt-1 text-sm">
+                    <div class="text-red-500 font-medium mb-1">الزامات فایل</div>
+                    <ul class=" text-xs font-normal ml-4 space-y-1">
+                        <li class="text-red-500">
+                            فرمت های قابل پشتیبانی: pdf, doc, docx
+                        </li>
+                        <li class="text-red-500">
+                            حداکثر حجم: 15 مگابایت
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <input type="hidden" name="send_type" value="send-to-internal-publication-manager">
+            <input type="hidden" name="post_id" value="${postId}">
+          </form>
+      `,
+                showCancelButton: true,
+                cancelButtonText: 'لغو',
+                confirmButtonText: 'ارسال',
+                focusConfirm: false,
+                preConfirm: () => {
+                    const form = document.getElementById('uploadForm');
+                    const formData = new FormData(form);
+
+                    return fetch('/send-post', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error('ارسال ناموفق بود!');
+                        }
+                        return response.json();
+                    }).catch(error => {
+                        Swal.showValidationMessage(`خطا: ${error}`);
+                    });
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('موفق!', 'پست شما با موفقیت ارسال شد.', 'success');
+                }
+            });
+        });
     } else {
         switch (pathname) {
             case '/dashboard':
