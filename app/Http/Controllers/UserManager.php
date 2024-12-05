@@ -23,7 +23,7 @@ class UserManager extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $userList = User::orderBy('id', 'asc')->paginate(10);
+        $userList = User::orderBy('id', 'asc')->get();
         $allRoles = Role::get();
         $groups = ScientificGroup::whereStatus(1)->orderBy('name')->get();
         return view('UserManager', compact('userList', 'allRoles', 'groups'));
