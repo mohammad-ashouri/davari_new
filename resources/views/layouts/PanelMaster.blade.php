@@ -37,7 +37,7 @@
     <script src="/build/plugins/Select-2.1.0/js/select.dataTables.js"></script>
 
     <script src="/build/plugins/jszip/dist/jszip.min.js"></script>
-    <script src="/build/plugins/pdfmake/build/pdfmake.min.js"></script>
+{{--    <script src="/build/plugins/pdfmake/build/pdfmake.min.js"></script>--}}
     <script src="/build/plugins/pdfmake/build/vfs_fonts.js"></script>
     <script>
         $(document).ready(function () {
@@ -205,88 +205,6 @@
                                 date.getHours().toString().padStart(2, '0') + '-' +
                                 date.getMinutes().toString().padStart(2, '0');
                             return document.title + '_' + formattedDate;
-                        }, exportOptions: {
-                            columns: ':not(.action)'
-                        }
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        text: 'PDF (Portrait)',
-                        orientation: 'portrait',
-                        pageSize: 'A4',
-                        title: 'Report (Portrait)',
-                        filename: function () {
-                            let date = new Date();
-                            let formattedDate = date.getFullYear() + '-' +
-                                (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
-                                date.getDate().toString().padStart(2, '0') + '_' +
-                                date.getHours().toString().padStart(2, '0') + '-' +
-                                date.getMinutes().toString().padStart(2, '0');
-                            return document.title + '_' + formattedDate;
-                        },
-                        customize: function (doc) {
-                            doc.styles.footer = {
-                                alignment: 'center',
-                                fontSize: 8,
-                                margin: [0, 10, 0, 0]
-                            };
-
-                            doc.footer = function (currentPage, pageCount) {
-                                return {text: currentPage.toString() + ' of ' + pageCount, style: 'footer'};
-                            };
-                            doc.background = function (currentPage, pageSize) {
-                                return {
-                                    image: '',
-                                    width: 300,
-                                    height: 300,
-                                    opacity: 0.3,
-                                    absolutePosition: {
-                                        x: (pageSize.width - 300) / 2,
-                                        y: (pageSize.height - 300) / 2
-                                    }
-                                };
-                            };
-                        }, exportOptions: {
-                            columns: ':not(.action)'
-                        }
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        text: 'PDF (Landscape)',
-                        orientation: 'landscape',
-                        pageSize: 'A4',
-                        title: 'Report (Landscape)',
-                        filename: function () {
-                            let date = new Date();
-                            let formattedDate = date.getFullYear() + '-' +
-                                (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
-                                date.getDate().toString().padStart(2, '0') + '_' +
-                                date.getHours().toString().padStart(2, '0') + '-' +
-                                date.getMinutes().toString().padStart(2, '0');
-                            return document.title + '_' + formattedDate;
-                        },
-                        customize: function (doc) {
-                            doc.styles.footer = {
-                                alignment: 'center',
-                                fontSize: 8,
-                                margin: [0, 10, 0, 0]
-                            };
-
-                            doc.footer = function (currentPage, pageCount) {
-                                return {text: currentPage.toString() + ' of ' + pageCount, style: 'footer'};
-                            };
-                            doc.background = function (currentPage, pageSize) {
-                                return {
-                                    image: '',
-                                    width: 300,
-                                    height: 300,
-                                    opacity: 0.3,
-                                    absolutePosition: {
-                                        x: (pageSize.width - 300) / 2,
-                                        y: (pageSize.height - 300) / 2
-                                    }
-                                };
-                            };
                         }, exportOptions: {
                             columns: ':not(.action)'
                         }
