@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('module');
             $table->string('part');
             $table->string('title');
-            $table->string('p_id');
+            $table->integer('p_id');
+            $table->integer('m_id')->nullable()->comment('For post movements');
             $table->text('src');
             $table->unsignedBigInteger('adder')->nullable();
             $table->foreign('adder')->references('id')->on('users');

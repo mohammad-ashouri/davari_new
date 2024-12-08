@@ -16,6 +16,7 @@ class File extends Model
         'part',
         'title',
         'p_id',
+        'm_id',
         'src',
         'adder',
         'editor',
