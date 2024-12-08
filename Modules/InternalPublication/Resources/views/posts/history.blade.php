@@ -1,4 +1,4 @@
-@php use Morilog\Jalali\Jalalian; @endphp
+@php use Modules\File\Entities\File;use Morilog\Jalali\Jalalian; @endphp
 @extends('layouts.PanelMaster')
 
 @section('content')
@@ -19,39 +19,76 @@
                         <tr class="bg-gradient-to-r from-blue-400 to-purple-500 items-center text-center text-white">
                             <th class="px-6 py-3  font-bold ">کد</th>
                             <th class="px-6 py-3  font-bold ">نوع</th>
+                            <th class="px-6 py-3  font-bold ">عنوان</th>
                             <th class="px-6 py-3  font-bold ">توضیحات</th>
                             <th class="px-6 py-3  font-bold ">فایل پیوست</th>
                             <th class="px-6 py-3  font-bold ">کاربر ثبت کننده</th>
-                            <th class="px-6 py-3  font-bold ">تاریخ ثبت</th>
+                            <th class="px-6 py-3 text-center  font-bold ">تاریخ ثبت</th>
                         </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-300">
-                        @foreach ($posts as $item)
+                        @foreach ($movements as $item)
                             <tr class="bg-white">
                                 <td class="px-6 py-4">{{ $item->id }}</td>
                                 <td class="px-6 py-4">
                                     {{ $item->type }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ $item->description }}
+                                    {{ $item->title }}
                                 </td>
                                 <td class="px-6 py-4">
+                                    {{ $item->description ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4 ">
+                                    @php
+                                        $movementFile=File::where('p_id',$item->p_id)->where('m_id',$item->id)->latest()->first();
+                                    @endphp
+                                    @if($movementFile)
+                                        <a href="{{ Storage::url($movementFile->src) }}">
+                                            <button type="button"
+                                                    class="px-4 py-2 mr-3 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring focus:border-gray-300">
+                                                دانلود فایل
+                                            </button>
+                                        </a>
+                                    @else
+                                        بدون فایل
+                                    @endif
+                                </td>
+                                <td class="text-center px-6 py-4">
                                     {{ $item->adderInfo->name }} {{ $item->adderInfo->family }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="text-center px-6 py-4">
                                     {{ Jalalian::fromDateTime($item->created_at)->format('Y/m/d H:i:s') }}
-                                </td>
-                                <td class="px-6 py-4 w-full">
-                                    <a href="{{ Storage::url($item->getInitFile->src) }}">
-                                        <button type="button"
-                                                class="px-4 py-2 mr-3 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring focus:border-gray-300">
-                                            دانلود فایل اصلی
-                                        </button>
-                                    </a>
-                                    <hr>
                                 </td>
                             </tr>
                         @endforeach
+                        <tr class="bg-white">
+                            <td class="px-6 py-4">{{ $post->id }}</td>
+                            <td class="px-6 py-4">
+                                اثر در سامانه ثبت شده است
+                            </td>
+                            <td class="px-6 py-4">
+                                -
+                            </td>
+                            <td class="px-6 py-4">
+                                -
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="{{ Storage::url($post->getInitFile->src) }}">
+                                    <button type="button"
+                                            class="px-4 py-2 mr-3 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring focus:border-gray-300">
+                                        دانلود فایل اصلی
+                                    </button>
+                                </a>
+                                <hr>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $post->adderInfo->name }} {{ $post->adderInfo->family }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ Jalalian::fromDateTime($post->created_at)->format('Y/m/d H:i:s') }}
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 @endif

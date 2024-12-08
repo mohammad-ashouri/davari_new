@@ -167,14 +167,4 @@ class PostController extends Controller
 
     }
 
-    /**
-     * Getting movements history
-     * @param Post $post
-     * @return View
-     */
-    public function history(Post $post)
-    {
-        $movements = InternalPublicationPostMovementHistory::where('p_id', $post->id)->get();
-        return view('internal-publication::posts.history', compact('post','movements'));
-    }
 }

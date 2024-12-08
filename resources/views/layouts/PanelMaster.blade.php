@@ -148,7 +148,7 @@
             );
 
             let table = new DataTable('.datatable', {
-                "ordering": true,
+                "ordering": false,
                 "searching": true,
                 "paging": true,
                 "info": true,
@@ -160,6 +160,9 @@
                     "targets": 'action',
                     "searchable": false
                 }],
+                initComplete: function () {
+                    $('thead th').addClass('text-center align-middle');
+                },
                 responsive: true,
                 "language": {
                     search: "جستجو:",

@@ -31,7 +31,7 @@ class InternalPublicationPostMovementHistory extends Model
         return $this->belongsTo(User::class, 'editor', 'id');
     }
 
-    public function getMovementFiles(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function getMovementFile(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(File::class, 'p_id', 'p_id');
     }

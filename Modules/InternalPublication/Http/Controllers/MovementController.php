@@ -7,6 +7,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\File\Entities\File;
 use Modules\InternalPublication\Entities\InternalPublicationPostMovementHistory;
 use Modules\InternalPublication\Entities\Post;
@@ -57,6 +58,7 @@ class MovementController extends Controller
             'type' => $request->post_type,
             'title' => $request->title,
             'description' => $request->description,
+            'adder' => auth()->user()->id,
         ]);
 
         if (!$movement) {
@@ -122,5 +124,17 @@ class MovementController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Getting movements history
+     * @param Post $post
+     * @return View
+     */
+    public function history(Post $post)
+    {
+        $movements = InternalPublicationPostMovementHistory::where('p_id', $post->id)->orderByDesc('created_at')->get();
+        $initialFile = File::where('p_id', $post->id)->where('module', 'internal_publication')->where('part', 'post')->latest()->first();
+        return view('internal-publication::posts.history', compact('post', 'movements', 'initialFile'));
     }
 }

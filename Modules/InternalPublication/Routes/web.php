@@ -16,9 +16,9 @@ use Modules\InternalPublication\Http\Controllers\PostController;
 
 Route::prefix('internal-publication')->group(function () {
     Route::resource('/posts', PostController::class);
-    Route::get('/posts/history/{post}', [PostController::class,'history'])->name('posts.history');
 });
 
-Route::prefix('movement')->group(function (){
-   Route::post('/send',[MovementController::class,'store'])->name('movement.store');
+Route::prefix('movement')->group(function () {
+    Route::post('/send', [MovementController::class, 'store'])->name('movement.store');
+    Route::get('/posts/history/{post}', [MovementController::class, 'history'])->name('movement.history');
 });

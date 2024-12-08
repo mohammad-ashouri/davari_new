@@ -454,3 +454,7 @@ table.dataTable > tbody > tr > th, table.dataTable > tbody > tr > td{
 .bottom .dt-paging {
     margin-top: 1rem;
 }
+table.dataTable thead th {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
