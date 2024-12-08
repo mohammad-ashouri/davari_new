@@ -17,7 +17,7 @@
         </button>
     @endif
 
-    @if(array_intersect(['مدیر نشر داخلی', 'ادمین کل'], $roles) and $post->status=='ارسال به مدیر نشر داخلی')
+    @if(array_intersect(['مدیر نشر داخلی', 'ادمین کل'], $roles) and $post->status=='ارسال به نشر داخلی')
         <button type="button" data-id="{{ $post->id }}"
                 class="w-full px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 send-to-research-manager">
             <i class="las la-share" style="font-size: 20px"></i>

@@ -275,8 +275,15 @@ $(document).ready(function () {
             Swal.fire({
                 title: title,
                 html: `
-        <form id="uploadForm" class="text-right" enctype="multipart/form-data">
+        <form id="move-data" class="text-right" enctype="multipart/form-data">
         <div>
+            <label for="title"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">عنوان</label>
+            <input type="text" id="title" name="title"
+                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                   placeholder="" required>
+        </div>
+        <div class=" mt-3">
         <label for="description"
                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">توضیحات
             (اختیاری)</label>
@@ -304,7 +311,7 @@ $(document).ready(function () {
                     </ul>
                 </div>
             </div>
-            <input type="hidden" name="send_type" value="send-to-internal-publication-manager">
+            <input type="hidden" name="post_type" value="${title}">
             <input type="hidden" name="post_id" value="${postId}">
           </form>
       `,
@@ -313,25 +320,78 @@ $(document).ready(function () {
                 confirmButtonText: 'ارسال',
                 focusConfirm: false,
                 preConfirm: () => {
-                    const form = document.getElementById('uploadForm');
+                    const form = document.getElementById('move-data');
                     const formData = new FormData(form);
 
-                    return fetch('/send-post', {
-                        method: 'POST',
-                        body: formData
-                    }).then(response => {
-                        if (!response.ok) {
-                            throw new Error('ارسال ناموفق بود!');
+                    // نمایش پیام تایید قبل از ارسال
+                    return Swal.fire({
+                        title: 'آیا از ارسال اطلاعات اطمینان دارید؟',
+                        text: "",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'بله، ارسال کن!',
+                        cancelButtonText: 'لغو'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // ارسال فرم اگر کاربر تایید کرد
+                            return fetch('/movement/send', {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                }
+                            })
+                                .then(response => {
+                                    if (response.status === 404) {
+                                        throw new Error('منبع موردنظر پیدا نشد.');
+                                    }
+                                    if (!response.ok) {
+                                        return response.json().then(err => {
+                                            if (err.errors && typeof err.errors === 'object') {
+                                                const firstError = Object.values(err.errors)[0];
+                                                if (firstError && firstError[0]) {
+                                                    throw new Error(firstError[0]);
+                                                }
+                                            }
+                                            throw new Error(err.message || 'ارسال ناموفق بود!');
+                                        });
+                                    }
+                                    let timerInterval;
+                                    Swal.fire({
+                                        title: "اثر شما با موفقیت ارسال شد.",
+                                        html: "این پیام بعد از <b></b> ثانیه به صورت خودکار بسته میشود.",
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: () => {
+                                            Swal.showLoading();
+                                            const timer = Swal.getPopup().querySelector("b");
+                                            timerInterval = setInterval(() => {
+                                                timer.textContent = `${Swal.getTimerLeft()}`;
+                                            }, 100);
+                                        },
+                                        willClose: () => {
+                                            clearInterval(timerInterval);
+                                        }
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        window.location.reload();
+                                    });
+                                })
+                                .catch(error => {
+                                    Swal.showValidationMessage(`خطا: ${error.message}`);
+                                });
+                        } else {
+                            return false;
                         }
-                        return response.json();
-                    }).catch(error => {
-                        Swal.showValidationMessage(`خطا: ${error}`);
                     });
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire('موفق!', 'پست شما با موفقیت ارسال شد.', 'success');
                 }
+            }).catch(() => {
+                // در صورتی که عملیات لغو شد، فرم بسته نشود
+                console.log('عملیات لغو شد');
             });
         });
     } else {
