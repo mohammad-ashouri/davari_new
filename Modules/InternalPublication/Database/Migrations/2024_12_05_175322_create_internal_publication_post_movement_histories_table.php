@@ -17,6 +17,8 @@ return new class extends Migration {
             $table->unsignedBigInteger('p_id');
             $table->foreign('p_id')->references('id')->on('posts');
             $table->string('type');
+            $table->string('sender_role')->nullable();
+            $table->string('receiver_role')->nullable();
             $table->string('title');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('adder')->nullable();

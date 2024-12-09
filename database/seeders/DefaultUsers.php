@@ -25,6 +25,9 @@ class DefaultUsers extends Seeder
             ['id' => 4, 'username' => 'helali', 'password' => $password, 'name' => 'ابوالفضل', 'family' => 'هلالی', 'scientific_group' => null, 'type' => 4, 'subject' => 'مدیر نشر داخلی', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
             ['id' => 5, 'username' => 'modirgp', 'password' => $password, 'name' => 'مدیر', 'family' => 'گروه علمی', 'scientific_group' => 1, 'type' => 5, 'subject' => 'مدیر گروه علمی', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
             ['id' => 6, 'username' => 'ozvgp', 'password' => $password, 'name' => 'عضو', 'family' => 'گروه', 'scientific_group' => 1, 'type' => 6, 'subject' => 'عضو گروه', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
+            ['id' => 7, 'username' => 'virastar', 'password' => $password, 'name' => 'ویراستار', 'family' => '1', 'scientific_group' => null, 'type' => 7, 'subject' => 'ویراستار', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
+            ['id' => 8, 'username' => 'tarrah', 'password' => $password, 'name' => 'طراح', 'family' => '1', 'scientific_group' => null, 'type' => 8, 'subject' => 'طراح', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
+            ['id' => 9, 'username' => 'safheara', 'password' => $password, 'name' => 'صفحه آرا', 'family' => '1', 'scientific_group' => null, 'type' => 9, 'subject' => 'صفحه آرا', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
         ]);
 
         $createRole = Role::create(['name' => 'ادمین کل']);
@@ -60,6 +63,14 @@ class DefaultUsers extends Seeder
             'نشر داخلی - مدیریت آثار - ویرایش اثر',
             'نشر داخلی - مدیریت آثار - نمایش تاریخچه',
             'نشر داخلی - مدیریت آثار - حذف اثر',
+            'نشر داخلی - نمایش تاریخچه - نمایش پیام های مدیر نشر داخلی',
+            'نشر داخلی - نمایش تاریخچه - نمایش پیام های معاون',
+            'نشر داخلی - نمایش تاریخچه - نمایش پیام های ادمین کل',
+            'نشر داخلی - نمایش تاریخچه - نمایش پیام های صفحه آرا',
+            'نشر داخلی - نمایش تاریخچه - نمایش پیام های طراح',
+            'نشر داخلی - نمایش تاریخچه - نمایش پیام های ویراستار',
+            'نشر داخلی - نمایش تاریخچه - نمایش پیام های مدیر گروه',
+            'نشر داخلی - نمایش تاریخچه - نمایش پیام های عضو گروه',
 
             'لیست کاربران',
             'ایجاد کاربر',
@@ -162,17 +173,26 @@ class DefaultUsers extends Seeder
             'نشر داخلی - مدیریت آثار - نمایش تاریخچه',
         ]);
 
-//        $createRole = Role::create(['name' => 'ویراستار']);
-//        $createRole->givePermissionTo([
-//        ]);
-//
-//        $createRole = Role::create(['name' => 'طراح']);
-//        $createRole->givePermissionTo([
-//        ]);
-//
-//        $createRole = Role::create(['name' => 'صفحه آرا']);
-//        $createRole->givePermissionTo([
-//        ]);
+        $createRole = Role::create(['name' => 'ویراستار']);
+        $createRole->givePermissionTo([
+            'منوی نشر داخلی',
+            'نشر داخلی - مدیریت آثار',
+            'نشر داخلی - مدیریت آثار - نمایش تاریخچه',
+        ]);
+
+        $createRole = Role::create(['name' => 'طراح']);
+        $createRole->givePermissionTo([
+            'منوی نشر داخلی',
+            'نشر داخلی - مدیریت آثار',
+            'نشر داخلی - مدیریت آثار - نمایش تاریخچه',
+        ]);
+
+        $createRole = Role::create(['name' => 'صفحه آرا']);
+        $createRole->givePermissionTo([
+            'منوی نشر داخلی',
+            'نشر داخلی - مدیریت آثار',
+            'نشر داخلی - مدیریت آثار - نمایش تاریخچه',
+        ]);
 
         $role = Role::where('name', 'ادمین کل')->first();
         $user = User::find(1);
@@ -198,16 +218,16 @@ class DefaultUsers extends Seeder
         $user = User::find(6);
         $user->assignRole([$role->id]);
 
-//        $role = Role::where('name', 'ویراستار')->first();
-//        $user = User::find(5);
-//        $user->assignRole([$role->id]);
-//
-//        $role = Role::where('name', 'طراح')->first();
-//        $user = User::find(6);
-//        $user->assignRole([$role->id]);
-//
-//        $role = Role::where('name', 'صفحه آرا')->first();
-//        $user = User::find(7);
-//        $user->assignRole([$role->id]);
+        $role = Role::where('name', 'ویراستار')->first();
+        $user = User::find(7);
+        $user->assignRole([$role->id]);
+
+        $role = Role::where('name', 'طراح')->first();
+        $user = User::find(8);
+        $user->assignRole([$role->id]);
+
+        $role = Role::where('name', 'صفحه آرا')->first();
+        $user = User::find(9);
+        $user->assignRole([$role->id]);
     }
 }

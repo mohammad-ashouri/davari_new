@@ -16,6 +16,8 @@
                         <th class="px-6 py-3  font-bold ">عنوان</th>
                         <th class="px-6 py-3  font-bold ">توضیحات</th>
                         <th class="px-6 py-3  font-bold ">فایل پیوست</th>
+                        <th class="px-6 py-3  font-bold ">از</th>
+                        <th class="px-6 py-3  font-bold ">به</th>
                         <th class="px-6 py-3  font-bold ">کاربر ثبت کننده</th>
                         <th class="px-6 py-3 text-center  font-bold ">تاریخ ثبت</th>
                     </tr>
@@ -23,6 +25,9 @@
                     <tbody class="divide-y divide-gray-300">
                     @if($movements)
                         @foreach ($movements as $item)
+                            @if(auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های عضو گروه'))
+
+                            @endif
                             <tr class="bg-white">
                                 <td class="px-6 py-4">{{ $item->id }}</td>
                                 <td class="px-6 py-4">
@@ -48,6 +53,12 @@
                                     @else
                                         بدون فایل
                                     @endif
+                                </td>
+                                <td class="text-center px-6 py-4">
+                                    {{ $item->sender_role }}
+                                </td>
+                                <td class="text-center px-6 py-4">
+                                    {{ $item->receiver_role }}
                                 </td>
                                 <td class="text-center px-6 py-4">
                                     {{ $item->adderInfo->name }} {{ $item->adderInfo->family }}
@@ -77,6 +88,10 @@
                                 </button>
                             </a>
                             <hr>
+                        </td>
+                        <td class="px-6 py-4">
+                        </td>
+                        <td class="px-6 py-4">
                         </td>
                         <td class="px-6 py-4">
                             {{ $post->adderInfo->name }} {{ $post->adderInfo->family }}

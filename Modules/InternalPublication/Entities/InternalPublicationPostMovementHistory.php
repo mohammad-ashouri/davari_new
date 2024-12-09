@@ -14,6 +14,8 @@ class InternalPublicationPostMovementHistory extends Model
     protected $fillable = [
         'p_id',
         'type',
+        'sender_role',
+        'receiver_role',
         'title',
         'description',
         'adder',
