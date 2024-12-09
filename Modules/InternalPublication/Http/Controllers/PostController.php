@@ -3,18 +3,14 @@
 namespace Modules\InternalPublication\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\View\View;
 use Modules\Catalog\Entities\PostFormat;
 use Modules\Catalog\Entities\ScientificGroup;
 use Modules\File\Entities\File;
-use Modules\InternalPublication\Entities\InternalPublicationPostMovementHistory;
 use Modules\InternalPublication\Entities\Post;
 
 class PostController extends Controller
@@ -146,6 +142,18 @@ class PostController extends Controller
             'adder' => auth()->user()->id,
         ]);
 
+        if (request()->hasFile('post_file')) {
+            $path = $request->file('post_file')->store('public/internal_publications/posts/' . $post->id);
+            File::where('module', 'internal_publication')->where('part', 'post')->where('title', 'init')->where('p_id', $post->id)->delete();
+            $file = File::create([
+                'module' => 'internal_publication',
+                'part' => 'post',
+                'title' => 'init',
+                'p_id' => $post->id,
+                'src' => $path,
+                'adder' => auth()->user()->id,
+            ]);
+        }
         if ($post) {
             return redirect()->route('posts.index')->with('success', 'اثر با موفقیت ویرایش شد.');
         }
