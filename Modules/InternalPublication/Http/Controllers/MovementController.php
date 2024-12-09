@@ -185,18 +185,21 @@ class MovementController extends Controller
         ];
 
 
-        $userPermissions = array_filter($permissions, function ($permission) {
+        $userPermissions = array_filter(array_keys($permissions), function ($permission) {
             return auth()->user()->hasPermissionTo($permission);
         });
 
         $movements = InternalPublicationPostMovementHistory::where('p_id', $post->id)
-            ->when(!empty($userPermissions), function ($query) use ($userPermissions) {
-                $query->where(function ($subQuery) use ($userPermissions) {
-                    foreach ($userPermissions as $permission => $roles) {
-                        $subQuery->orWhere(function ($innerQuery) use ($roles) {
-                            $innerQuery->where('sender_role', $roles['sender_role'])
-                                ->where('receiver_role', $roles['receiver_role']);
-                        });
+            ->when(!empty($userPermissions), function ($query) use ($userPermissions, $permissions) {
+                $query->where(function ($subQuery) use ($userPermissions, $permissions) {
+                    foreach ($userPermissions as $permission) {
+                        if (isset($permissions[$permission])) {
+                            $roles = $permissions[$permission];
+                            $subQuery->orWhere(function ($innerQuery) use ($roles) {
+                                $innerQuery->where('sender_role', $roles['sender_role'])
+                                    ->where('receiver_role', $roles['receiver_role']);
+                            });
+                        }
                     }
                 });
             })

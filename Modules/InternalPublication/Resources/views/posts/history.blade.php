@@ -25,9 +25,6 @@
                     <tbody class="divide-y divide-gray-300">
                     @if($movements)
                         @foreach ($movements as $item)
-                            @if(auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های عضو گروه'))
-
-                            @endif
                             <tr class="bg-white">
                                 <td class="px-6 py-4">{{ $item->id }}</td>
                                 <td class="px-6 py-4">
