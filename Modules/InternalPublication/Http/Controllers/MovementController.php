@@ -159,53 +159,50 @@ class MovementController extends Controller
      */
     public function history(Post $post)
     {
+        $permissions = [
+            'نشر داخلی - نمایش تاریخچه - ارسالی عضو گروه به مدیر گروه' => ['sender_role' => 'عضو گروه', 'receiver_role' => 'مدیر گروه'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی مدیر گروه به مدیر پژوهش' => ['sender_role' => 'مدیر گروه', 'receiver_role' => 'مدیر پژوهش'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی مدیر گروه به عضو گروه' => ['sender_role' => 'مدیر گروه', 'receiver_role' => 'عضو گروه'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی مدیر پژوهش به مدیر گروه' => ['sender_role' => 'مدیر پژوهش', 'receiver_role' => 'مدیر گروه'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی مدیر پژوهش به مدیر نشر داخلی' => ['sender_role' => 'مدیر پژوهش', 'receiver_role' => 'مدیر نشر داخلی'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی معاون به مدیر پژوهش' => ['sender_role' => 'معاون', 'receiver_role' => 'مدیر پژوهش'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی مدیر نشر داخلی به مدیر پژوهش' => ['sender_role' => 'مدیر نشر داخلی', 'receiver_role' => 'مدیر پژوهش'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی مدیر نشر داخلی به ویراستار' => ['sender_role' => 'مدیر نشر داخلی', 'receiver_role' => 'ویراستار'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی مدیر نشر داخلی به طراح' => ['sender_role' => 'مدیر نشر داخلی', 'receiver_role' => 'طراح'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی مدیر نشر داخلی به صفحه آرا' => ['sender_role' => 'مدیر نشر داخلی', 'receiver_role' => 'صفحه آرا'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی ویراستار به مدیر نشر داخلی' => ['sender_role' => 'ویراستار', 'receiver_role' => 'مدیر نشر داخلی'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی طراح به مدیر نشر داخلی' => ['sender_role' => 'طراح', 'receiver_role' => 'مدیر نشر داخلی'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی صفحه آرا به مدیر نشر داخلی' => ['sender_role' => 'صفحه آرا', 'receiver_role' => 'مدیر نشر داخلی'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی ادمین کل به مدیر گروه' => ['sender_role' => 'ادمین کل', 'receiver_role' => 'مدیر گروه'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی ادمین کل به عضو گروه' => ['sender_role' => 'ادمین کل', 'receiver_role' => 'عضو گروه'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی ادمین کل به مدیر پژوهش' => ['sender_role' => 'ادمین کل', 'receiver_role' => 'مدیر پژوهش'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی ادمین کل به مدیر نشر داخلی' => ['sender_role' => 'ادمین کل', 'receiver_role' => 'مدیر نشر داخلی'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی ادمین کل به معاون' => ['sender_role' => 'ادمین کل', 'receiver_role' => 'معاون'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی ادمین کل به ویراستار' => ['sender_role' => 'ادمین کل', 'receiver_role' => 'ویراستار'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی ادمین کل به صفحه آرا' => ['sender_role' => 'ادمین کل', 'receiver_role' => 'صفحه آرا'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی ادمین کل به طراح' => ['sender_role' => 'ادمین کل', 'receiver_role' => 'طراح'],
+            'نشر داخلی - نمایش تاریخچه - ارسالی مدیر نشر داخلی به معاون' => ['sender_role' => 'مدیر نشر داخلی', 'receiver_role' => 'معاون'],
+        ];
+
+
+        $userPermissions = array_filter($permissions, function ($permission) {
+            return auth()->user()->hasPermissionTo($permission);
+        });
+
         $movements = InternalPublicationPostMovementHistory::where('p_id', $post->id)
-            ->when(auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های مدیر نشر داخلی')
-                or auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های ویراستار')
-                or auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های معاون')
-                or auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های ادمین کل')
-                or auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های صفحه آرا')
-                or auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های طراح')
-                or auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های مدیر گروه')
-                or auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های عضو گروه')
-                , function ($query) {
-                $query->where(function ($subQuery) {
-                    if (auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های مدیر نشر داخلی')) {
-                        $subQuery->where('sender_role', 'مدیر نشر داخلی')
-                            ->orWhere('receiver_role', 'مدیر نشر داخلی');
-                    }
-                    if (auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های ویراستار')) {
-                        $subQuery->orWhere('sender_role', 'ویراستار')
-                            ->orWhere('receiver_role', 'ویراستار');
-                    }
-                    if (auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های معاون')) {
-                        $subQuery->orWhere('sender_role', 'معاون')
-                            ->orWhere('receiver_role', 'معاون');
-                    }
-                    if (auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های ادمین کل')) {
-                        $subQuery->orWhere('sender_role', 'ادمین کل')
-                            ->orWhere('receiver_role', 'ادمین کل');
-                    }
-                    if (auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های صفحه آرا')) {
-                        $subQuery->orWhere('sender_role', 'صفحه آرا')
-                            ->orWhere('receiver_role', 'صفحه آرا');
-                    }
-                    if (auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های طراح')) {
-                        $subQuery->orWhere('sender_role', 'طراح')
-                            ->orWhere('receiver_role', 'طراح');
-                    }
-                    if (auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های مدیر گروه')) {
-                        $subQuery->orWhere('sender_role', 'مدیر گروه')
-                            ->orWhere('receiver_role', 'مدیر گروه');
-                    }
-                    if (auth()->user()->hasPermissionTo('نشر داخلی - نمایش تاریخچه - نمایش پیام های عضو گروه')) {
-                        $subQuery->orWhere('sender_role', 'عضو گروه')
-                            ->orWhere('receiver_role', 'عضو گروه');
+            ->when(!empty($userPermissions), function ($query) use ($userPermissions) {
+                $query->where(function ($subQuery) use ($userPermissions) {
+                    foreach ($userPermissions as $permission => $roles) {
+                        $subQuery->orWhere(function ($innerQuery) use ($roles) {
+                            $innerQuery->where('sender_role', $roles['sender_role'])
+                                ->where('receiver_role', $roles['receiver_role']);
+                        });
                     }
                 });
             })
             ->orderByDesc('created_at')
             ->get();
+
         $initialFile = File::where('p_id', $post->id)->where('module', 'internal_publication')->where('part', 'post')->latest()->first();
         return view('internal-publication::posts.history', compact('post', 'movements', 'initialFile'));
     }
