@@ -11,16 +11,11 @@
 |
 */
 
-use Modules\Research\Http\Controllers\MovementController;
-use Modules\Research\Http\Controllers\ResearchController;
+Route::prefix('research')->group(function () {
+    Route::resource('/research-posts', PostController::class);
 
-Route::prefix('internal-publication')->group(function () {
-    Route::resource('/posts', ResearchController::class);
-
-    Route::prefix('movement')->group(function () {
+    Route::prefix('research-movement')->group(function () {
         Route::post('/send', [MovementController::class, 'store'])->name('movement.store');
         Route::get('/posts/history/{post}', [MovementController::class, 'history'])->name('movement.history');
     });
 });
-
-
