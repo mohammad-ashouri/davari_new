@@ -64,12 +64,19 @@ class MenuMiddleware
                         ],
                     ]
                 ],
-                6 => [
-                    'title' => 'مدیریت پرسنل',
-                    'link' => '/Personnels',
-                    'permission' => "لیست پرسنل",
-                    'icon' => 'las la-users',
-                    'childs' => []
+                3 => [
+                    'title' => 'پژوهش',
+                    'link' => '',
+                    'permission' => "منوی پژوهش",
+                    'icon' => 'las la-book',
+                    'childs' => [
+                        [
+                            'title' => 'مدیریت آثار',
+                            'link' => '/research/posts',
+                            'permission' => "پژوهش - مدیریت آثار",
+                            'icon' => 'las la-mail-bulk',
+                        ],
+                    ]
                 ],
                 9 => [
                     'title' => 'مدیریت کاربران',

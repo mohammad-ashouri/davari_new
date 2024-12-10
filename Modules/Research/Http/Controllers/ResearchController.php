@@ -31,7 +31,12 @@ class ResearchController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderByDesc('updated_at')->get();
+        $posts = Post::where(function ($query) {
+            $query->where('status', 'ارسال به مدیر گروه')->orWhere('status', 'ارسال به عضو گروه');
+        })
+            ->where('scientific_group', auth()->user()->scientificGroupInfo->id)
+            ->orderByDesc('updated_at')
+            ->get();
         return view('research::posts.index', compact('posts'));
     }
 
@@ -58,8 +63,6 @@ class ResearchController extends Controller
     {
         $this->validate($request, [
             'title' => 'required|string|max:255',
-            'author' => 'required|integer|exists:users,id',
-            'scientific_group' => 'required|integer|exists:scientific_groups,id',
             'post_format' => 'required|integer|exists:post_formats,id',
             'description' => 'nullable|string',
             'post_file' => 'required|file|mimes:pdf,doc,docx',
@@ -67,8 +70,8 @@ class ResearchController extends Controller
 
         $post = Post::create([
             'title' => $request->title,
-            'author' => $request->author,
-            'scientific_group' => $request->scientific_group,
+            'author' => auth()->user()->id,
+            'scientific_group' => auth()->user()->scientificGroupInfo->id,
             'post_format' => $request->post_format,
             'description' => $request->description,
             'adder' => auth()->user()->id,
@@ -76,7 +79,7 @@ class ResearchController extends Controller
 
         $path = $request->file('post_file')->store('public/internal_publications/posts/' . $post->id);
         $file = File::create([
-            'module' => 'internal_publication',
+            'module' => 'research',
             'part' => 'post',
             'title' => 'init',
             'p_id' => $post->id,
@@ -113,7 +116,7 @@ class ResearchController extends Controller
         $authors = User::whereHas('roles', function ($query) {
             $query->where('name', 'عضو گروه');
         })->orderBy('family')->get();
-        $post = Post::findOrFail($id);
+        $post = Post::where('status', 'ارسال به مدیر گروه')->where('status', 'ارسال به عضو گروه')->findOrFail($id);
         return view('research::posts.edit', compact('post', 'scientificGroups', 'postFormats', 'authors'));
     }
 
@@ -128,15 +131,13 @@ class ResearchController extends Controller
         $this->validate($request, [
             'id' => 'required|integer|exists:posts,id',
             'title' => 'required|string|max:255',
-            'author' => 'required|integer|exists:users,id',
-            'scientific_group' => 'required|integer|exists:scientific_groups,id',
             'post_format' => 'required|integer|exists:post_formats,id',
             'description' => 'required|text',
         ]);
         $post = Post::findOrFail($id)->update([
             'title' => $request->title,
-            'author' => $request->author,
-            'scientific_group' => $request->scientific_group,
+            'author' => auth()->user()->id,
+            'scientific_group' => auth()->user()->scientificGroupInfo->id,
             'post_format' => $request->post_format,
             'description' => $request->description,
             'adder' => auth()->user()->id,
@@ -146,7 +147,7 @@ class ResearchController extends Controller
             $path = $request->file('post_file')->store('public/internal_publications/posts/' . $post->id);
             File::where('module', 'internal_publication')->where('part', 'post')->where('title', 'init')->where('p_id', $post->id)->delete();
             $file = File::create([
-                'module' => 'internal_publication',
+                'module' => 'research',
                 'part' => 'post',
                 'title' => 'init',
                 'p_id' => $post->id,
@@ -169,4 +170,5 @@ class ResearchController extends Controller
     {
         //
     }
+
 }
