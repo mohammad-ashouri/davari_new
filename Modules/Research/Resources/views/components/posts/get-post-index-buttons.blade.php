@@ -4,7 +4,7 @@
         $roles = auth()->user()->getRoleNames()->toArray();
     @endphp
 
-    @if(array_intersect(['مدیر گروه علمی', 'ادمین کل'], $roles) and $post->status=='ارسال به مدیر گروه')
+    @if(array_intersect(['مدیر گروه', 'ادمین کل'], $roles) and $post->status=='ارسال به مدیر گروه')
         <button type="button" data-id="{{ $post->id }}"
                 class="w-full px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 send-to-research-manager">
             <i class="las la-share" style="font-size: 20px"></i>

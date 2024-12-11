@@ -71,7 +71,7 @@ class ResearchController extends Controller
             'post_file' => 'required|file|mimes:pdf,doc,docx',
         ]);
 
-        if (auth()->user()->hasRole('مدیر گروه علمی')) {
+        if (auth()->user()->hasRole('مدیر گروه')) {
             $author = $request->author;
         } else {
             $author = auth()->user()->id;
@@ -146,7 +146,7 @@ class ResearchController extends Controller
             'description' => 'required|text',
         ]);
 
-        if (auth()->user()->hasRole('مدیر گروه علمی')) {
+        if (auth()->user()->hasRole('مدیر گروه')) {
             $author = $request->author;
         } else {
             $author = auth()->user()->id;

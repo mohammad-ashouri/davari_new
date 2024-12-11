@@ -338,7 +338,7 @@ $(document).ready(function () {
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // ارسال فرم اگر کاربر تایید کرد
-                            return fetch('/movement/send', {
+                            return fetch('/internal-publication/movement/send', {
                                 method: 'POST',
                                 body: formData,
                                 headers: {

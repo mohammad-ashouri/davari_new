@@ -23,7 +23,7 @@ class DefaultUsers extends Seeder
             ['id' => 2, 'username' => 'farajnejad', 'password' => $password, 'name' => 'حسن', 'family' => 'فرج نژاد', 'scientific_group' => null, 'type' => 2, 'subject' => 'معاون', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
             ['id' => 3, 'username' => 'mostafavizadeh', 'password' => $password, 'name' => 'حسین', 'family' => 'مصطفوی زاده', 'scientific_group' => null, 'type' => 3, 'subject' => 'مدیر پژوهش', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
             ['id' => 4, 'username' => 'helali', 'password' => $password, 'name' => 'ابوالفضل', 'family' => 'هلالی', 'scientific_group' => null, 'type' => 4, 'subject' => 'مدیر نشر داخلی', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
-            ['id' => 5, 'username' => 'modirgp', 'password' => $password, 'name' => 'مدیر', 'family' => 'گروه علمی', 'scientific_group' => 1, 'type' => 5, 'subject' => 'مدیر گروه علمی', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
+            ['id' => 5, 'username' => 'modirgp', 'password' => $password, 'name' => 'مدیر', 'family' => 'گروه علمی', 'scientific_group' => 1, 'type' => 5, 'subject' => 'مدیر گروه', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
             ['id' => 6, 'username' => 'ozvgp', 'password' => $password, 'name' => 'عضو', 'family' => 'گروه', 'scientific_group' => 1, 'type' => 6, 'subject' => 'عضو گروه', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
             ['id' => 7, 'username' => 'virastar', 'password' => $password, 'name' => 'ویراستار', 'family' => '1', 'scientific_group' => null, 'type' => 7, 'subject' => 'ویراستار', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
             ['id' => 8, 'username' => 'tarrah', 'password' => $password, 'name' => 'طراح', 'family' => '1', 'scientific_group' => null, 'type' => 8, 'subject' => 'طراح', 'active' => 1, 'ntcp' => 0, 'adder' => 1],
@@ -240,7 +240,7 @@ class DefaultUsers extends Seeder
             'نشر داخلی - نمایش تاریخچه - ارسالی ادمین کل به طراح',
         ]);
 
-        $createRole = Role::create(['name' => 'مدیر گروه علمی']);
+        $createRole = Role::create(['name' => 'مدیر گروه']);
         $createRole->givePermissionTo([
             'منوی پژوهش',
             'پژوهش - مدیریت آثار',
@@ -313,7 +313,7 @@ class DefaultUsers extends Seeder
         $user = User::find(4);
         $user->assignRole([$role->id]);
 
-        $role = Role::where('name', 'مدیر گروه علمی')->first();
+        $role = Role::where('name', 'مدیر گروه')->first();
         $user = User::find(5);
         $user->assignRole([$role->id]);
 
