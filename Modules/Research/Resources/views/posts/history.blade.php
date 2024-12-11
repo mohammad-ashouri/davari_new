@@ -4,7 +4,7 @@
 @section('content')
     <main class="flex-1 bg-gray-100 py-6 px-8">
         <div class="mx-auto lg:mr-72">
-            <h1 class="text-2xl font-bold mb-4">نشر داخلی - مدیریت آثار - نمایش تاریخچه: {{ $post->title }}</h1>
+            <h1 class="text-2xl font-bold mb-4">پژوهش - مدیریت آثار - نمایش تاریخچه: {{ $post->title }}</h1>
             @include('layouts.components.errors')
             @include('layouts.components.success')
             <div class="bg-white rounded shadow p-6 flex flex-col ">

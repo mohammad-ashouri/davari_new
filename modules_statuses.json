@@ -3,5 +3,6 @@
     "Catalogs": true,
     "Catalog": true,
     "File": true,
-    "Research": true
+    "Research": true,
+    "Post": true
 }

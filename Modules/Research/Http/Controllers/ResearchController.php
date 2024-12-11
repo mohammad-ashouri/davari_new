@@ -9,9 +9,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Catalog\Entities\PostFormat;
-use Modules\Catalog\Entities\ScientificGroup;
 use Modules\File\Entities\File;
-use Modules\InternalPublication\Entities\Post;
+use Modules\Post\Entities\Post;
 
 class ResearchController extends Controller
 {
@@ -33,10 +32,13 @@ class ResearchController extends Controller
     {
         $posts = Post::where(function ($query) {
             $query->where('status', 'ارسال به مدیر گروه')->orWhere('status', 'ارسال به عضو گروه');
-        })
-            ->where('scientific_group', auth()->user()->scientificGroupInfo->id)
-            ->orderByDesc('updated_at')
-            ->get();
+        });
+        if (auth()->user()->hasRole('عضو گروه')) {
+            $posts->where('author', auth()->user()->id);
+        }
+        $posts->where('scientific_group', auth()->user()->scientificGroupInfo->id)
+            ->orderByDesc('updated_at');
+        $posts = $posts->get();
         return view('research::posts.index', compact('posts'));
     }
 
@@ -46,12 +48,13 @@ class ResearchController extends Controller
      */
     public function create()
     {
-        $scientificGroups = ScientificGroup::get();
         $postFormats = PostFormat::get();
         $authors = User::whereHas('roles', function ($query) {
             $query->where('name', 'عضو گروه');
-        })->orderBy('family')->get();
-        return view('research::posts.create', compact('scientificGroups', 'postFormats', 'authors'));
+        })
+            ->where('scientific_group', auth()->user()->scientificGroupInfo->id)
+            ->orderBy('family')->get();
+        return view('research::posts.create', compact('postFormats', 'authors'));
     }
 
     /**
@@ -68,19 +71,26 @@ class ResearchController extends Controller
             'post_file' => 'required|file|mimes:pdf,doc,docx',
         ]);
 
+        if (auth()->user()->hasRole('مدیر گروه علمی')) {
+            $author = $request->author;
+        } else {
+            $author = auth()->user()->id;
+        }
+
         $post = Post::create([
             'title' => $request->title,
-            'author' => auth()->user()->id,
+            'status' => 'ارسال به مدیر گروه',
+            'author' => $author,
             'scientific_group' => auth()->user()->scientificGroupInfo->id,
             'post_format' => $request->post_format,
             'description' => $request->description,
             'adder' => auth()->user()->id,
         ]);
 
-        $path = $request->file('post_file')->store('public/internal_publications/posts/' . $post->id);
+        $path = $request->file('post_file')->store('public/research/posts/' . $post->id);
         $file = File::create([
-            'module' => 'research',
-            'part' => 'post',
+            'module' => 'post',
+            'part' => 'init',
             'title' => 'init',
             'p_id' => $post->id,
             'src' => $path,
@@ -111,13 +121,14 @@ class ResearchController extends Controller
      */
     public function edit($id)
     {
-        $scientificGroups = ScientificGroup::get();
         $postFormats = PostFormat::get();
         $authors = User::whereHas('roles', function ($query) {
             $query->where('name', 'عضو گروه');
-        })->orderBy('family')->get();
+        })
+            ->where('scientific_group', auth()->user()->scientificGroupInfo->id)
+            ->orderBy('family')->get();
         $post = Post::where('status', 'ارسال به مدیر گروه')->where('status', 'ارسال به عضو گروه')->findOrFail($id);
-        return view('research::posts.edit', compact('post', 'scientificGroups', 'postFormats', 'authors'));
+        return view('research::posts.edit', compact('post', 'postFormats', 'authors'));
     }
 
     /**
@@ -134,9 +145,16 @@ class ResearchController extends Controller
             'post_format' => 'required|integer|exists:post_formats,id',
             'description' => 'required|text',
         ]);
+
+        if (auth()->user()->hasRole('مدیر گروه علمی')) {
+            $author = $request->author;
+        } else {
+            $author = auth()->user()->id;
+        }
+
         $post = Post::findOrFail($id)->update([
             'title' => $request->title,
-            'author' => auth()->user()->id,
+            'author' => $author,
             'scientific_group' => auth()->user()->scientificGroupInfo->id,
             'post_format' => $request->post_format,
             'description' => $request->description,
@@ -144,11 +162,11 @@ class ResearchController extends Controller
         ]);
 
         if (request()->hasFile('post_file')) {
-            $path = $request->file('post_file')->store('public/internal_publications/posts/' . $post->id);
-            File::where('module', 'internal_publication')->where('part', 'post')->where('title', 'init')->where('p_id', $post->id)->delete();
+            $path = $request->file('post_file')->store('public/research/posts/' . $post->id);
+            File::where('module', 'research')->where('part', 'post')->where('title', 'init')->where('p_id', $post->id)->delete();
             $file = File::create([
-                'module' => 'research',
-                'part' => 'post',
+                'module' => 'post',
+                'part' => 'init',
                 'title' => 'init',
                 'p_id' => $post->id,
                 'src' => $path,

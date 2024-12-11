@@ -254,8 +254,8 @@ $(document).ready(function () {
 
     let pathname = window.location.pathname;
 
-    if (pathname.includes('internal-publication')) {
-        $('.send-to-internal-publication-manager,.send-to-group-manager,.send-to-research-manager,.send-to-editor,.send-to-designer,.send-to-layout-designer').click(function () {
+    if (pathname.includes('internal-publication') || pathname.includes('research')) {
+        $('.send-to-internal-publication-manager,.send-to-group-manager,.send-to-research-manager,.send-to-editor,.send-to-designer,.send-to-layout-designer,.send-to-group-member,.send-to-group-manager').click(function () {
             let title = null;
             if ($(this).hasClass('send-to-internal-publication-manager')) {
                 title = 'ارسال به نشر داخلی';
@@ -269,6 +269,10 @@ $(document).ready(function () {
                 title = 'ارسال به طراح';
             } else if ($(this).hasClass('send-to-layout-designer')) {
                 title = 'ارسال به صفحه آرا';
+            } else if ($(this).hasClass('send-to-group-member')) {
+                title = 'ارسال به عضو گروه';
+            } else if ($(this).hasClass('send-to-group-manager')) {
+                title = 'ارسال به مدیر گروه';
             }
 
             const postId = $(this).data('id');
@@ -393,7 +397,139 @@ $(document).ready(function () {
                 // در صورتی که عملیات لغو شد، فرم بسته نشود
                 console.log('عملیات لغو شد');
             });
-        });
+            });
+
+            $('.send-to-group-member,.send-to-group-manager').click(function () {
+                let title = null;
+                if ($(this).hasClass('send-to-group-member')) {
+                    title = 'ارسال به عضو گروه';
+                } else if ($(this).hasClass('send-to-group-manager')) {
+                    title = 'ارسال به مدیر گروه';
+                }
+
+                const postId = $(this).data('id');
+                Swal.fire({
+                    title: title,
+                    html: `
+        <form id="move-data" class="text-right" enctype="multipart/form-data">
+        <div>
+            <label for="title"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">عنوان</label>
+            <input type="text" id="title" name="title"
+                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                   placeholder="" required>
+        </div>
+        <div class=" mt-3">
+        <label for="description"
+               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">توضیحات
+            (اختیاری)</label>
+        <textarea
+            rows="6"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            id="description" name="description"></textarea>
+        </div>
+        <div class=" mt-3">
+          <label for="post_file"
+               class="text-gray-900 text-sm font-bold whitespace-nowrap">فایل
+          ضمیمه(اختیاری):</label>
+          <input id="post_file" name="post_file" type="file"
+               accept=".pdf, .doc, .docx"
+               class="border border-gray-300 px-3 py-2 w-full rounded-lg focus:ring-blue-500 focus:border-blue-500">
+               <div class="mt-1 text-sm">
+                    <div class="text-red-500 font-medium mb-1">الزامات فایل</div>
+                    <ul class=" text-xs font-normal ml-4 space-y-1">
+                        <li class="text-red-500">
+                            فرمت های قابل پشتیبانی: pdf, doc, docx
+                        </li>
+                        <li class="text-red-500">
+                            حداکثر حجم: 15 مگابایت
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <input type="hidden" name="post_type" value="${title}">
+            <input type="hidden" name="post_id" value="${postId}">
+          </form>
+      `,
+                    showCancelButton: true,
+                    cancelButtonText: 'لغو',
+                    confirmButtonText: 'ارسال',
+                    focusConfirm: false,
+                    preConfirm: () => {
+                        const form = document.getElementById('move-data');
+                        const formData = new FormData(form);
+
+                        // نمایش پیام تایید قبل از ارسال
+                        return Swal.fire({
+                            title: 'آیا از ارسال اطلاعات اطمینان دارید؟',
+                            text: "",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'بله، ارسال کن!',
+                            cancelButtonText: 'لغو'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // ارسال فرم اگر کاربر تایید کرد
+                                return fetch('/research/movement/send', {
+                                    method: 'POST',
+                                    body: formData,
+                                    headers: {
+                                        'X-Requested-With': 'XMLHttpRequest',
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                    }
+                                })
+                                    .then(response => {
+                                        if (response.status === 404) {
+                                            throw new Error('منبع موردنظر پیدا نشد.');
+                                        }
+                                        if (!response.ok) {
+                                            return response.json().then(err => {
+                                                if (err.errors && typeof err.errors === 'object') {
+                                                    const firstError = Object.values(err.errors)[0];
+                                                    if (firstError && firstError[0]) {
+                                                        throw new Error(firstError[0]);
+                                                    }
+                                                }
+                                                throw new Error(err.message || 'ارسال ناموفق بود!');
+                                            });
+                                        }
+                                        let timerInterval;
+                                        Swal.fire({
+                                            title: "اثر شما با موفقیت ارسال شد.",
+                                            html: "این پیام بعد از <b></b> ثانیه به صورت خودکار بسته میشود.",
+                                            timer: 3000,
+                                            timerProgressBar: true,
+                                            didOpen: () => {
+                                                Swal.showLoading();
+                                                const timer = Swal.getPopup().querySelector("b");
+                                                timerInterval = setInterval(() => {
+                                                    timer.textContent = `${Swal.getTimerLeft()}`;
+                                                }, 100);
+                                            },
+                                            willClose: () => {
+                                                clearInterval(timerInterval);
+                                            }
+                                        }).then((result) => {
+                                            /* Read more about handling dismissals below */
+                                            window.location.reload();
+                                        });
+                                    })
+                                    .catch(error => {
+                                        Swal.showValidationMessage(`خطا: ${error.message}`);
+                                    });
+                            } else {
+                                return false;
+                            }
+                        });
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                    }
+                }).catch(() => {
+                    // در صورتی که عملیات لغو شد، فرم بسته نشود
+                    console.log('عملیات لغو شد');
+                });
+            });
     } else {
         switch (pathname) {
             case '/dashboard':

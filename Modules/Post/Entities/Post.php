@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\InternalPublication\Entities;
+namespace Modules\Post\Entities;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -57,8 +57,8 @@ class Post extends Model
     public function getInitFile(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(File::class, 'id', 'p_id')
-            ->where('module', 'internal_publication')
-            ->where('part', 'post')
+            ->where('module', 'post')
+            ->where('part', 'init')
             ->where('title', 'init');
     }
 }

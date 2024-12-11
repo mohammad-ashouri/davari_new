@@ -10,7 +10,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\View\View;
 use Modules\File\Entities\File;
 use Modules\InternalPublication\Entities\InternalPublicationPostMovementHistory;
-use Modules\InternalPublication\Entities\Post;
+use Modules\Post\Entities\Post;
 
 class MovementController extends Controller
 {

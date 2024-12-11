@@ -15,6 +15,21 @@
                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                    placeholder="" required>
                         </div>
+                        @if(auth()->user()->hasRole('مدیر گروه علمی'))
+                            <div>
+                                <label for="author"
+                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">گردآورنده</label>
+                                <select name="author"
+                                        class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required>
+                                    <option selected disabled value="">انتخاب کنید...</option>
+                                    @foreach($authors as $author)
+                                        <option
+                                            value="{{ $author->id }}" @selected(old('author')==$author->id)>{{ $author->name }} {{ $author->family }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
                         <div>
                             <label for="post_format"
                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">قالب اثر</label>
@@ -59,7 +74,7 @@
                     </div>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    @can('نشر داخلی - مدیریت آثار - اثر جدید')
+                    @can('پژوهش - مدیریت آثار - اثر جدید')
                         <button type="submit"
                                 class="px-4 py-2 mr-3 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300">
                             ایجاد اثر
