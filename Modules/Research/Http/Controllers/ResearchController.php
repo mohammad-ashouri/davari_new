@@ -30,14 +30,11 @@ class ResearchController extends Controller
      */
     public function index()
     {
-        $posts = Post::where(function ($query) {
-            $query->where('status', 'ارسال به مدیر گروه')->orWhere('status', 'ارسال به عضو گروه');
-        });
+        $posts = Post::where('scientific_group', auth()->user()->scientificGroupInfo->id)
+            ->orderByDesc('updated_at');
         if (auth()->user()->hasRole('عضو گروه')) {
             $posts->where('author', auth()->user()->id);
         }
-        $posts->where('scientific_group', auth()->user()->scientificGroupInfo->id)
-            ->orderByDesc('updated_at');
         $posts = $posts->get();
         return view('research::posts.index', compact('posts'));
     }
