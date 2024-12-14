@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Catalog\Entities\PostFormat;
 use Modules\Catalog\Entities\ScientificGroup;
 use Modules\File\Entities\File;
+use Modules\InternalPublication\Entities\InternalPublicationPostMovementHistory;
 
 class Post extends Model
 {
@@ -60,5 +61,10 @@ class Post extends Model
             ->where('module', 'post')
             ->where('part', 'init')
             ->where('title', 'init');
+    }
+
+    public function movements(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(InternalPublicationPostMovementHistory::class, 'p_id', 'id');
     }
 }

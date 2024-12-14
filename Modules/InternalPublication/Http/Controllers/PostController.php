@@ -31,7 +31,29 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderByDesc('updated_at')->get();
+        $posts = Post::with(['movements'])
+            ->when(auth()->user()->hasRole('مدیر نشر داخلی'), function ($query) {
+                $query->whereHas('movements', function ($query) {
+                    $query->where('type', 'ارسال به مدیر نشر داخلی');
+                });
+            })
+            ->when(auth()->user()->hasRole('ویراستار'), function ($query) {
+                $query->whereHas('movements', function ($query) {
+                    $query->where('type', 'ارسال به ویراستار');
+                });
+            })
+            ->when(auth()->user()->hasRole('طراح'), function ($query) {
+                $query->whereHas('movements', function ($query) {
+                    $query->where('type', 'ارسال به طراح');
+                });
+            })
+            ->when(auth()->user()->hasRole('صفحه آرا'), function ($query) {
+                $query->whereHas('movements', function ($query) {
+                    $query->where('type', 'ارسال به صفحه آرا');
+                });
+            })
+            ->orderByDesc('updated_at')->get();
+        dd($posts);
         return view('internal-publication::posts.index', compact('posts'));
     }
 
