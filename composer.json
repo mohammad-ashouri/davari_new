@@ -23,7 +23,6 @@
         "league/commonmark": "^2.4",
         "mews/captcha": "^3.4",
         "morilog/jalali": "^3.4",
-        "niklasravnsborg/laravel-pdf": "^4.1",
         "nwidart/laravel-modules": "10",
         "phpoffice/phpspreadsheet": "^1.29",
         "realrashid/sweet-alert": "^7.0",

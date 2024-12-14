@@ -171,7 +171,6 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
         Ybazli\Faker\FakerServiceProvider::class,
-        niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Spatie\Html\HtmlServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
