@@ -5,7 +5,7 @@
             <h1 class="text-2xl font-bold mb-4">ویرایش اثر</h1>
             @include('layouts.components.errors')
             <div class="bg-white rounded shadow flex flex-col p-4">
-                {{ html()->form('PATCH')->route('posts.update',$post->id)->acceptsFiles()->id('edit-catalog')->open() }}
+                {{ html()->form('PATCH')->route('internal-publication.posts.update',$post->id)->acceptsFiles()->id('edit-catalog')->open() }}
                 <div class="grid gap-6 mb-6 md:grid-cols-2">
                     <div>
                         <label for="title"

@@ -9,7 +9,7 @@
             @include('layouts.components.success')
             <div class="bg-white rounded shadow p-6 flex flex-col ">
                 @can('پژوهش - مدیریت آثار - اثر جدید')
-                    <a type="button" href="{{route('posts.create')}}"
+                    <a type="button" href="{{route('research.posts.create')}}"
                        class="px-4 py-2 bg-green-500 w-40 mb-2 text-center text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300">
                         اثر جدید
                     </a>
@@ -73,7 +73,7 @@
                                 </td>
                                 <td class="px-6 py-4 w-full action">
                                     @can('پژوهش - مدیریت آثار - ویرایش اثر')
-                                        <a href="{{ route('posts.edit',$item->id) }}">
+                                        <a href="{{ route('research.posts.edit',$item->id) }}">
                                             <button type="button" data-id="{{ $item->id }}"
                                                     class="px-4 py-2 mr-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">
                                                 ویرایش
@@ -81,7 +81,7 @@
                                         </a>
                                     @endcan
                                     @can('پژوهش - مدیریت آثار - نمایش تاریخچه')
-                                        <a href="{{ route('research-movement.history',$item->id) }}">
+                                        <a href="{{ route('research.movement.history',$item->id) }}">
                                             <button type="button" data-id="{{ $item->id }}"
                                                     class="px-4 py-2 mr-3 bg-teal-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">
                                                 تاریخچه

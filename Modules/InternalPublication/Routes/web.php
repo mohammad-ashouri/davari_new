@@ -14,7 +14,7 @@
 use Modules\InternalPublication\Http\Controllers\MovementController;
 use Modules\InternalPublication\Http\Controllers\PostController;
 
-Route::prefix('internal-publication')->group(function () {
+Route::prefix('internal-publication')->as('internal-publication.')->group(function () {
     Route::resource('/posts', PostController::class);
 
     Route::prefix('movement')->group(function () {
