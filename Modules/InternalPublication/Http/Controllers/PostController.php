@@ -53,7 +53,6 @@ class PostController extends Controller
                 });
             })
             ->orderByDesc('updated_at')->get();
-        dd($posts);
         return view('internal-publication::posts.index', compact('posts'));
     }
 
