@@ -183,6 +183,6 @@ class MovementController extends Controller
             ->get();
 
         $initialFile = File::where('p_id', $post->id)->where('module', 'research')->where('part', 'post')->latest()->first();
-        return view('internal-publication::posts.history', compact('post', 'movements', 'initialFile'));
+        return view('research::posts.history', compact('post', 'movements', 'initialFile'));
     }
 }

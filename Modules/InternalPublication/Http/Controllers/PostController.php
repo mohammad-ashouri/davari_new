@@ -106,7 +106,7 @@ class PostController extends Controller
         ]);
 
         if ($post and $path and $file) {
-            return redirect()->route('posts.index')->with('success', 'اثر با موفقیت ایجاد شد.');
+            return redirect()->route('internal-publication.posts.index')->with('success', 'اثر با موفقیت ایجاد شد.');
         }
         $post->delete();
         return redirect()->back()->withErrors(['errors' => 'خطا در ایجاد اثر']);
@@ -176,7 +176,7 @@ class PostController extends Controller
             ]);
         }
         if ($post) {
-            return redirect()->route('posts.index')->with('success', 'اثر با موفقیت ویرایش شد.');
+            return redirect()->route('internal-publication.posts.index')->with('success', 'اثر با موفقیت ویرایش شد.');
         }
         return redirect()->back()->withErrors(['errors' => 'خطا در ویرایش اثر']);
     }
