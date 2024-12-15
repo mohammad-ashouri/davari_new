@@ -255,7 +255,7 @@ $(document).ready(function () {
     let pathname = window.location.pathname;
 
     if (pathname.includes('internal-publication') || pathname.includes('research')) {
-        $('.send-to-internal-publication-manager,.send-to-group-manager,.send-to-research-manager,.send-to-editor,.send-to-designer,.send-to-layout-designer,.send-to-group-member,.send-to-group-manager').click(function () {
+        $('.send-to-internal-publication-manager,.send-to-group-manager,.send-to-research-manager,.send-to-editor,.send-to-designer,.send-to-layout-designer,.send-to-group-member,.send-to-group-manager,.send-to-group-deputy').click(function () {
             let title = null;
             if ($(this).hasClass('send-to-internal-publication-manager')) {
                 title = 'ارسال به نشر داخلی';
@@ -273,6 +273,8 @@ $(document).ready(function () {
                 title = 'ارسال به عضو گروه';
             } else if ($(this).hasClass('send-to-group-manager')) {
                 title = 'ارسال به مدیر گروه';
+            } else if ($(this).hasClass('send-to-group-deputy')) {
+                title = 'ارسال به معاون';
             }
 
             const postId = $(this).data('id');

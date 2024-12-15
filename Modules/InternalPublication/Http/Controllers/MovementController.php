@@ -46,7 +46,7 @@ class MovementController extends Controller
             'description' => 'nullable|string',
             'post_file' => 'nullable|file|mimes:doc,docx,pdf|max:15360',
             'post_id' => 'nullable|integer|exists:posts,id',
-            'post_type' => 'required|string|in:ارسال به نشر داخلی,ارسال به مدیر گروه,ارسال به مدیر پژوهش,ارسال به ویراستار,ارسال به طراح,ارسال به صفحه آرا',
+            'post_type' => 'required|string|in:ارسال به نشر داخلی,ارسال به مدیر گروه,ارسال به مدیر پژوهش,ارسال به ویراستار,ارسال به طراح,ارسال به صفحه آرا,ارسال به معاون',
         ]);
         $post = Post::findOrFail($request->post_id);
         if (!$post) {
@@ -75,6 +75,9 @@ class MovementController extends Controller
                 break;
             case 'ارسال به نشر داخلی':
                 $receiverRole = 'مدیر نشر داخلی';
+                break;
+            case 'ارسال به معاون':
+                $receiverRole = 'معاون';
                 break;
         }
         $movement = InternalPublicationPostMovementHistory::create([

@@ -4,7 +4,7 @@
         $roles = auth()->user()->getRoleNames()->toArray();
     @endphp
 
-    @if(array_intersect(['مدیر پژوهش', 'معاون', 'ادمین کل'], $roles) and $post->status=='ارسال به مدیر پژوهش')
+    @if(array_intersect(['مدیر پژوهش', 'ادمین کل'], $roles) and $post->status=='ارسال به مدیر پژوهش')
         <button type="button" data-id="{{ $post->id }}"
                 class="w-full px-2 py-1 bg-green-500 text-md-center text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-green-300 send-to-internal-publication-manager">
             <i class="las la-share" style="font-size: 20px"></i>
@@ -14,6 +14,29 @@
                 class="w-full px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300 send-to-group-manager">
             <i class="las la-share" style="font-size: 20px"></i>
             مدیر گروه
+        </button>
+        <button type="button" data-id="{{ $post->id }}"
+                class="w-full px-2 py-1 bg-amber-500 text-white rounded-md hover:bg-amber-600 focus:outline-none focus:ring focus:border-amber-300 send-to-group-deputy">
+            <i class="las la-share" style="font-size: 20px"></i>
+            معاون
+        </button>
+    @endif
+
+    @if(array_intersect(['معاون', 'ادمین کل'], $roles) and $post->status=='ارسال به معاون')
+        <button type="button" data-id="{{ $post->id }}"
+                class="w-full px-2 py-1 bg-green-500 text-md-center text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-green-300 send-to-internal-publication-manager">
+            <i class="las la-share" style="font-size: 20px"></i>
+            نشر داخلی
+        </button>
+        <button type="button" data-id="{{ $post->id }}"
+                class="w-full px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300 send-to-group-manager">
+            <i class="las la-share" style="font-size: 20px"></i>
+            مدیر گروه
+        </button>
+        <button type="button" data-id="{{ $post->id }}"
+                class="w-full px-2 py-1 bg-lime-500 text-white rounded-md hover:bg-lime-600 focus:outline-none focus:ring focus:border-lime-300 send-to-research-manager">
+            <i class="las la-share" style="font-size: 20px"></i>
+            مدیر پژوهش
         </button>
     @endif
 
