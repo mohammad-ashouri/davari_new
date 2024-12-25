@@ -24,7 +24,7 @@ class PostFormatController extends Controller
 
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        return view('Catalog::PostFormats.create');
+        return view('Catalog::post-formats.create');
     }
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
