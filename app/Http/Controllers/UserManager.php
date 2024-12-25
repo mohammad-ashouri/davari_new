@@ -94,8 +94,8 @@ class UserManager extends Controller
     public function newUser(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255|unique:users',
-            'scientificGroup' => 'required|integer|exists:scientific_groups,id',
+            'username' => 'required|string|max:255|unique:users,username',
+            'scientificGroup' => 'nullable|integer|exists:scientific_groups,id',
             'type' => 'required|exists:roles,id',
         ]);
         if ($validator->fails()) {
