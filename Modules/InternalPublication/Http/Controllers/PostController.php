@@ -34,7 +34,7 @@ class PostController extends Controller
         $posts = Post::with(['movements'])
             ->when(auth()->user()->hasRole('مدیر نشر داخلی'), function ($query) {
                 $query->whereHas('movements', function ($query) {
-                    $query->where('type', 'ارسال به مدیر نشر داخلی');
+                    $query->where('type', 'ارسال به نشر داخلی');
                 });
             })
             ->when(auth()->user()->hasRole('ویراستار'), function ($query) {
