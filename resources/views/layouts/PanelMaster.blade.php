@@ -148,7 +148,7 @@
             );
 
             let table = new DataTable('.datatable', {
-                "ordering": false,
+                "ordering": true,
                 "searching": true,
                 "paging": true,
                 "info": true,
