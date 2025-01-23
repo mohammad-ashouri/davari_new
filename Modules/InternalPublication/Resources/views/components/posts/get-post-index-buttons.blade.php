@@ -65,7 +65,7 @@
 
     @if(array_intersect(['صفحه آرا','طراح','ویراستار', 'ادمین کل'], $roles) and ($post->status=='ارسال به ویراستار' or $post->status=='ارسال به صفحه آرا' or $post->status=='ارسال به طراح'))
         <button type="button" data-id="{{ $post->id }}"
-                class="w-full px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 send-to-research-manager">
+                class="w-full px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 send-to-internal-publication-manager">
             <i class="las la-share" style="font-size: 20px"></i>
             مدیر نشر داخلی
         </button>
