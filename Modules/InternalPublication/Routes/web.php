@@ -16,6 +16,7 @@ use Modules\InternalPublication\Http\Controllers\PostController;
 
 Route::prefix('internal-publication')->as('internal-publication.')->group(function () {
     Route::resource('/posts', PostController::class);
+    Route::post('/revocation', [PostController::class, 'revocation'])->name('posts.revocation');
 
     Route::prefix('movement')->group(function () {
         Route::post('/send', [MovementController::class, 'store'])->name('movement.store');

@@ -11,6 +11,7 @@ use Illuminate\Routing\Controller;
 use Modules\Catalog\Entities\PostFormat;
 use Modules\Catalog\Entities\ScientificGroup;
 use Modules\File\Entities\File;
+use Modules\InternalPublication\Entities\InternalPublicationPostMovementHistory;
 use Modules\Post\Entities\Post;
 
 class PostController extends Controller
@@ -22,6 +23,7 @@ class PostController extends Controller
         $this->middleware('permission:نشر داخلی - مدیریت آثار', ['only' => ['index']]);
         $this->middleware('permission:نشر داخلی - مدیریت آثار - اثر جدید', ['only' => ['create', 'store']]);
         $this->middleware('permission:نشر داخلی - مدیریت آثار - ویرایش اثر', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:نشر داخلی - مدیریت آثار - ابطال اثر', ['only' => ['revocation']]);
         $this->middleware('permission:نشر داخلی - مدیریت آثار - حذف اثر', ['only' => ['destroy']]);
     }
 
@@ -135,6 +137,9 @@ class PostController extends Controller
             $query->where('name', 'عضو گروه');
         })->orderBy('family')->get();
         $post = Post::findOrFail($id);
+        if ($post->status == 'باطل شده') {
+            abort(403);
+        }
         return view('internal-publication::posts.edit', compact('post', 'scientificGroups', 'postFormats', 'authors'));
     }
 
@@ -144,7 +149,7 @@ class PostController extends Controller
      * @param int $id
      * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $this->validate($request, [
             'id' => 'required|integer|exists:posts,id',
@@ -186,9 +191,29 @@ class PostController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         //
     }
 
+    public function revocation(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required|integer|exists:posts,id',
+        ]);
+        Post::find($request->id)->update([
+            'status' => 'باطل شده'
+        ]);
+
+        InternalPublicationPostMovementHistory::create([
+            'p_id' => $request->id,
+            'type' => 'ابطال اثر',
+            'sender_role' => auth()->user()->roles->first()->name,
+            'receiver_role' => null,
+            'title' => 'اثر باطل شد',
+            'description' => null,
+            'adder' => auth()->user()->id,
+        ]);
+        return response()->json(['success', 'ابطال اثر با موفقیت انجام شد']);
+    }
 }

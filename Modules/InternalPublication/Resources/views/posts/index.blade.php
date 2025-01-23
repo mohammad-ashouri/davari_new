@@ -72,14 +72,16 @@
                                     {{ $item->status }}
                                 </td>
                                 <td class="px-6 py-4 w-full action">
-                                    @can('نشر داخلی - مدیریت آثار - ویرایش اثر')
-                                        <a href="{{ route('internal-publication.posts.edit',$item->id) }}">
-                                            <button type="button" data-id="{{ $item->id }}"
-                                                    class="px-4 py-2 mr-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">
-                                                ویرایش
-                                            </button>
-                                        </a>
-                                    @endcan
+                                    @if($item->status!=='باطل شده')
+                                        @can('نشر داخلی - مدیریت آثار - ویرایش اثر')
+                                            <a href="{{ route('internal-publication.posts.edit',$item->id) }}">
+                                                <button type="button" data-id="{{ $item->id }}"
+                                                        class="px-4 py-2 mr-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">
+                                                    ویرایش
+                                                </button>
+                                            </a>
+                                        @endcan
+                                    @endif
                                     @can('نشر داخلی - مدیریت آثار - نمایش تاریخچه')
                                         <a href="{{ route('internal-publication.movement.history',$item->id) }}">
                                             <button type="button" data-id="{{ $item->id }}"
@@ -88,6 +90,14 @@
                                             </button>
                                         </a>
                                     @endcan
+                                    @if($item->status!=='باطل شده')
+                                        @can('نشر داخلی - مدیریت آثار - ابطال اثر')
+                                            <button type="button" data-id="{{ $item->id }}"
+                                                    class="px-4 py-2 mr-3 bg-purple-500 text-white rounded-md hover:bg-purple-600 focus:outline-none focus:ring focus:border-purple-300 post-revocation">
+                                                ابطال اثر
+                                            </button>
+                                        @endcan
+                                    @endif
                                     <a href="{{ Storage::url($item->getInitFile->src) }}">
                                         <button type="button"
                                                 class="px-4 py-2 mr-3 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring focus:border-gray-300">

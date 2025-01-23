@@ -341,9 +341,7 @@ $(document).ready(function () {
                         if (result.isConfirmed) {
                             // ارسال فرم اگر کاربر تایید کرد
                             return fetch('/internal-publication/movement/send', {
-                                method: 'POST',
-                                body: formData,
-                                headers: {
+                                method: 'POST', body: formData, headers: {
                                     'X-Requested-With': 'XMLHttpRequest',
                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                                 }
@@ -399,20 +397,20 @@ $(document).ready(function () {
                 // در صورتی که عملیات لغو شد، فرم بسته نشود
                 console.log('عملیات لغو شد');
             });
-            });
+        });
 
-            $('.send-to-group-member,.send-to-group-manager').click(function () {
-                let title = null;
-                if ($(this).hasClass('send-to-group-member')) {
-                    title = 'ارسال به عضو گروه';
-                } else if ($(this).hasClass('send-to-group-manager')) {
-                    title = 'ارسال به مدیر گروه';
-                }
+        $('.send-to-group-member,.send-to-group-manager').click(function () {
+            let title = null;
+            if ($(this).hasClass('send-to-group-member')) {
+                title = 'ارسال به عضو گروه';
+            } else if ($(this).hasClass('send-to-group-manager')) {
+                title = 'ارسال به مدیر گروه';
+            }
 
-                const postId = $(this).data('id');
-                Swal.fire({
-                    title: title,
-                    html: `
+            const postId = $(this).data('id');
+            Swal.fire({
+                title: title,
+                html: `
         <form id="move-data" class="text-right" enctype="multipart/form-data">
         <div>
             <label for="title"
@@ -453,85 +451,121 @@ $(document).ready(function () {
             <input type="hidden" name="post_id" value="${postId}">
           </form>
       `,
-                    showCancelButton: true,
-                    cancelButtonText: 'لغو',
-                    confirmButtonText: 'ارسال',
-                    focusConfirm: false,
-                    preConfirm: () => {
-                        const form = document.getElementById('move-data');
-                        const formData = new FormData(form);
+                showCancelButton: true,
+                cancelButtonText: 'لغو',
+                confirmButtonText: 'ارسال',
+                focusConfirm: false,
+                preConfirm: () => {
+                    const form = document.getElementById('move-data');
+                    const formData = new FormData(form);
 
-                        // نمایش پیام تایید قبل از ارسال
-                        return Swal.fire({
-                            title: 'آیا از ارسال اطلاعات اطمینان دارید؟',
-                            text: "",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: 'بله، ارسال کن!',
-                            cancelButtonText: 'لغو'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                // ارسال فرم اگر کاربر تایید کرد
-                                return fetch('/research/movement/send', {
-                                    method: 'POST',
-                                    body: formData,
-                                    headers: {
-                                        'X-Requested-With': 'XMLHttpRequest',
-                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    // نمایش پیام تایید قبل از ارسال
+                    return Swal.fire({
+                        title: 'آیا از ارسال اطلاعات اطمینان دارید؟',
+                        text: "",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'بله، ارسال کن!',
+                        cancelButtonText: 'لغو'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // ارسال فرم اگر کاربر تایید کرد
+                            return fetch('/research/movement/send', {
+                                method: 'POST', body: formData, headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                }
+                            })
+                                .then(response => {
+                                    if (response.status === 404) {
+                                        throw new Error('منبع موردنظر پیدا نشد.');
                                     }
-                                })
-                                    .then(response => {
-                                        if (response.status === 404) {
-                                            throw new Error('منبع موردنظر پیدا نشد.');
-                                        }
-                                        if (!response.ok) {
-                                            return response.json().then(err => {
-                                                if (err.errors && typeof err.errors === 'object') {
-                                                    const firstError = Object.values(err.errors)[0];
-                                                    if (firstError && firstError[0]) {
-                                                        throw new Error(firstError[0]);
-                                                    }
+                                    if (!response.ok) {
+                                        return response.json().then(err => {
+                                            if (err.errors && typeof err.errors === 'object') {
+                                                const firstError = Object.values(err.errors)[0];
+                                                if (firstError && firstError[0]) {
+                                                    throw new Error(firstError[0]);
                                                 }
-                                                throw new Error(err.message || 'ارسال ناموفق بود!');
-                                            });
-                                        }
-                                        let timerInterval;
-                                        Swal.fire({
-                                            title: "اثر شما با موفقیت ارسال شد.",
-                                            html: "این پیام بعد از <b></b> ثانیه به صورت خودکار بسته میشود.",
-                                            timer: 3000,
-                                            timerProgressBar: true,
-                                            didOpen: () => {
-                                                Swal.showLoading();
-                                                const timer = Swal.getPopup().querySelector("b");
-                                                timerInterval = setInterval(() => {
-                                                    timer.textContent = `${Swal.getTimerLeft()}`;
-                                                }, 100);
-                                            },
-                                            willClose: () => {
-                                                clearInterval(timerInterval);
                                             }
-                                        }).then((result) => {
-                                            /* Read more about handling dismissals below */
-                                            window.location.reload();
+                                            throw new Error(err.message || 'ارسال ناموفق بود!');
                                         });
-                                    })
-                                    .catch(error => {
-                                        Swal.showValidationMessage(`خطا: ${error.message}`);
+                                    }
+                                    let timerInterval;
+                                    Swal.fire({
+                                        title: "اثر شما با موفقیت ارسال شد.",
+                                        html: "این پیام بعد از <b></b> ثانیه به صورت خودکار بسته میشود.",
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: () => {
+                                            Swal.showLoading();
+                                            const timer = Swal.getPopup().querySelector("b");
+                                            timerInterval = setInterval(() => {
+                                                timer.textContent = `${Swal.getTimerLeft()}`;
+                                            }, 100);
+                                        },
+                                        willClose: () => {
+                                            clearInterval(timerInterval);
+                                        }
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        window.location.reload();
                                     });
-                            } else {
-                                return false;
+                                })
+                                .catch(error => {
+                                    Swal.showValidationMessage(`خطا: ${error.message}`);
+                                });
+                        } else {
+                            return false;
+                        }
+                    });
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                }
+            }).catch(() => {
+                // در صورتی که عملیات لغو شد، فرم بسته نشود
+                console.log('عملیات لغو شد');
+            });
+        });
+
+        $('.post-revocation').click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST', url: "/internal-publication/revocation",
+                data: {
+                    id: $(this).data('id')
+                }
+                , headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                }, success: function (response) {
+                    if (response){
+                        let timerInterval;
+                        Swal.fire({
+                            title: "اثر شما با موفقیت باطل شد.",
+                            html: "این پیام بعد از <b></b> ثانیه به صورت خودکار بسته میشود.",
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading();
+                                const timer = Swal.getPopup().querySelector("b");
+                                timerInterval = setInterval(() => {
+                                    timer.textContent = `${Swal.getTimerLeft()}`;
+                                }, 100);
+                            },
+                            willClose: () => {
+                                clearInterval(timerInterval);
                             }
+                        }).then((result) => {
+                            /* Read more about handling dismissals below */
+                            window.location.reload();
                         });
                     }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                    }
-                }).catch(() => {
-                    // در صورتی که عملیات لغو شد، فرم بسته نشود
-                    console.log('عملیات لغو شد');
-                });
+                }, error: function (xhr, textStatus, errorThrown) {
+                    // console.log(xhr);
+                }
             });
+        });
     } else {
         switch (pathname) {
             case '/dashboard':

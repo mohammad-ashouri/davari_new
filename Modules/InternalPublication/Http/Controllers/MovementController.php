@@ -206,7 +206,8 @@ class MovementController extends Controller
                             });
                         }
                     }
-                });
+                })
+                    ->orWhere('type', 'ابطال اثر');
             })
             ->orderByDesc('created_at')
             ->get();
