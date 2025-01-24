@@ -196,6 +196,11 @@ class PostController extends Controller
         //
     }
 
+    /**
+     * Revoke posts
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function revocation(Request $request)
     {
         $this->validate($request, [
