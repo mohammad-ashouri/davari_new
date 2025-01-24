@@ -48,6 +48,18 @@ class MenuMiddleware
                             'permission' => "لیست گروه علمی",
                             'icon' => 'las la-user-friends',
                         ],
+                        [
+                            'title' => 'موضوع اثر',
+                            'link' => '/catalog/post-subjects',
+                            'permission' => "لیست موضوع اثر",
+                            'icon' => 'las la-heading',
+                        ],
+                        [
+                            'title' => 'زبان',
+                            'link' => '/catalog/languages',
+                            'permission' => "لیست زبان",
+                            'icon' => 'las la-language',
+                        ],
                     ]
                 ],
                 2 => [
@@ -77,6 +89,13 @@ class MenuMiddleware
                             'icon' => 'las la-mail-bulk',
                         ],
                     ]
+                ],
+                4 => [
+                    'title' => 'کتابخانه',
+                    'link' => 'library',
+                    'permission' => "کتابخانه - لیست اثر",
+                    'icon' => 'las la-book',
+                    'childs' => []
                 ],
                 9 => [
                     'title' => 'مدیریت کاربران',

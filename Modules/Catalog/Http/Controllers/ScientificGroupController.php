@@ -59,6 +59,6 @@ class ScientificGroupController extends Controller
         $postFormat->save();
 
         return redirect()->route('scientific-groups.index')
-            ->with('success', 'نقش کاربری با موفقیت ویرایش شد.');
+            ->with('success', 'گروه علمی با موفقیت ویرایش شد.');
     }
 }

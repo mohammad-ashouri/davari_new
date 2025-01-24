@@ -59,6 +59,6 @@ class PostFormatController extends Controller
         $postFormat->save();
 
         return redirect()->route('post-formats.index')
-            ->with('success', 'نقش کاربری با موفقیت ویرایش شد.');
+            ->with('success', 'قالب اثر با موفقیت ویرایش شد.');
     }
 }

@@ -4,5 +4,6 @@
     "Catalog": true,
     "File": true,
     "Research": true,
-    "Post": true
+    "Post": true,
+    "Library": true
 }

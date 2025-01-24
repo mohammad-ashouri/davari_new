@@ -13,7 +13,9 @@
 
 use Modules\InternalPublication\Http\Controllers\InternalPublicationController;
 
-Route::prefix('catalog')->group(function() {
+Route::prefix('catalog')->group(function () {
     Route::resource('post-formats', PostFormatController::class);
     Route::resource('scientific-groups', ScientificGroupController::class);
+    Route::resource('languages', LanguageController::class);
+    Route::resource('post-subjects', PostSubjectController::class);
 });

@@ -40,6 +40,16 @@ class PermissionsSeeder extends Seeder
             ['name' => 'ویرایش گروه علمی', 'guard_name' => 'web'],
             ['name' => 'حذف گروه علمی', 'guard_name' => 'web'],
 
+            ['name' => 'لیست موضوع اثر', 'guard_name' => 'web'],
+            ['name' => 'ایجاد موضوع اثر', 'guard_name' => 'web'],
+            ['name' => 'ویرایش موضوع اثر', 'guard_name' => 'web'],
+            ['name' => 'حذف موضوع اثر', 'guard_name' => 'web'],
+
+            ['name' => 'لیست زبان', 'guard_name' => 'web'],
+            ['name' => 'ایجاد زبان', 'guard_name' => 'web'],
+            ['name' => 'ویرایش زبان', 'guard_name' => 'web'],
+            ['name' => 'حذف زبان', 'guard_name' => 'web'],
+
             //Research
             ['name' => 'منوی پژوهش', 'guard_name' => 'web'],
             ['name' => 'پژوهش - مدیریت آثار', 'guard_name' => 'web'],
@@ -90,6 +100,13 @@ class PermissionsSeeder extends Seeder
             ['name' => 'نشر داخلی - نمایش تاریخچه - ارسالی طراح به مدیر نشر داخلی', 'guard_name' => 'web'],
 
             ['name' => 'نشر داخلی - نمایش تاریخچه - ارسالی صفحه آرا به مدیر نشر داخلی', 'guard_name' => 'web'],
+
+            //Library
+            ['name' => 'کتابخانه - لیست اثر', 'guard_name' => 'web'],
+            ['name' => 'کتابخانه - ایجاد اثر', 'guard_name' => 'web'],
+            ['name' => 'کتابخانه - ویرایش اثر', 'guard_name' => 'web'],
+            ['name' => 'کتابخانه - حذف اثر', 'guard_name' => 'web'],
+
 
             // Users Manager
             ['name' => 'لیست کاربران', 'guard_name' => 'web'],
