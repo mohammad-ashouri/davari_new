@@ -539,7 +539,7 @@ $(document).ready(function () {
                 , headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 }, success: function (response) {
-                    if (response){
+                    if (response) {
                         let timerInterval;
                         Swal.fire({
                             title: "اثر شما با موفقیت باطل شد.",
@@ -569,6 +569,332 @@ $(document).ready(function () {
     } else {
         switch (pathname) {
             case '/dashboard':
+                break;
+            case '/library':
+
+            async function loadLanguages() {
+                try {
+                    const response = await fetch('/catalog/languages/get-all');
+                    if (!response.ok) throw new Error('خطا در دریافت داده‌ها');
+                    return await response.json();
+                } catch (error) {
+                    Swal.fire('خطا!', 'بارگذاری زبان‌ها ناموفق بود', 'error');
+                    return [];
+                }
+            }
+
+            async function loadPostSubjects() {
+                try {
+                    const response = await fetch('/catalog/post-subjects/get-all');
+                    if (!response.ok) throw new Error('خطا در دریافت داده‌ها');
+                    return await response.json();
+                } catch (error) {
+                    Swal.fire('خطا!', 'بارگذاری موضوعات اثر ناموفق بود', 'error');
+                    return [];
+                }
+            }
+
+            async function loadPostFormats() {
+                try {
+                    const response = await fetch('/catalog/post-formats/get-all');
+                    if (!response.ok) throw new Error('خطا در دریافت داده‌ها');
+                    return await response.json();
+                } catch (error) {
+                    Swal.fire('خطا!', 'بارگذاری قالب های اثر ناموفق بود', 'error');
+                    return [];
+                }
+            }
+
+            async function showForm(existingData = null, languages = [], postSubjects = [], postFormats = [], postId = null) {
+                try {
+                    // اگر داده‌ای وجود نداشت، لیست‌ها را از سرور بگیرید
+                    if (!languages.length || !postSubjects.length || !postFormats.length) {
+                        [languages, postSubjects, postFormats] = await Promise.all([
+                            loadLanguages(),
+                            loadPostSubjects(),
+                            loadPostFormats(),
+                        ]);
+                    }
+
+                    const languageOptions = languages.map(lang =>
+                        `<option value="${lang.id}" ${existingData?.language_info?.id == lang.id ? 'selected' : ''}>${lang.name}</option>`
+                    ).join('');
+
+                    const postSubjectOptions = postSubjects.map(subject =>
+                        `<option value="${subject.id}" ${existingData?.subject_info?.id == subject.id ? 'selected' : ''}>${subject.name}</option>`
+                    ).join('');
+
+                    const postFormatOptions = postFormats.map(format =>
+                        `<option value="${format.id}" ${existingData?.post_format_info?.id == format.id ? 'selected' : ''}>${format.name}</option>`
+                    ).join('');
+
+                    // ساخت فرم
+                    Swal.fire({
+                        title: existingData ? 'ویرایش اثر' : 'فرم ثبت اثر',
+                        html: `
+                    <div class="text-right mb-3">
+                        <label for="name"
+                               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">نام اثر</label>
+                        <input id="name" value="${existingData?.name || ''}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="نام اثر" required>
+                    </div>
+                    <div class="text-right mb-3">
+                        <label for="author"
+                               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">نویسنده</label>
+                        <input id="author" value="${existingData?.author || ''}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="نویسنده" required>
+                    </div>
+                    <div class="text-right mb-3">
+                     <label for="subject"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> موضوع اثر</label>
+                        <select id="subject" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <option value="">موضوع اثر را انتخاب کنید</option>
+                            ${postSubjectOptions}
+                        </select>
+                    </div>
+                    <div class="text-right mb-3">
+                            <label for="post_format"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> قالب اثر</label>
+                        <select id="post_format" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <option value="">قالب اثر را انتخاب کنید</option>
+                            ${postFormatOptions}
+                        </select>
+                    </div>
+                    <div class="text-right mb-3">
+                            <label for="language"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> زبان اثر</label>
+                        <select id="language" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <option value="">زبان را انتخاب کنید</option>
+                            ${languageOptions}
+                        </select>
+                    </div>
+                    <div class="text-right mb-3">
+                            <label for="pub-date"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> تاریخ انتشار</label>
+                        <input id="pub-date"  value="${existingData?.publication_date || ''}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="فرمت تاریخ باید به صورت 1403/10/20 باشد" required>
+                    </div>
+                    <div class="text-right mb-3">
+                            <label for="file"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> فایل اثر (در حالت ویرایش، در صورت نیاز فایل را انتخاب کنید)</label>
+                        <input id="file" type="file" ${existingData ? '' : 'required'} accept=".pdf,.doc,.docx" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="فرمت تاریخ باید به صورت 1403/10/20 باشد" required>
+                    </div>
+                `,
+                        confirmButtonText: existingData ? 'ویرایش اثر' : 'ثبت اثر',
+                        showCancelButton: true,
+                        cancelButtonText: 'انصراف',
+                        focusConfirm: false,
+                        customClass: {
+                            confirmButton: 'btn btn-success mx-2',
+                            cancelButton: 'btn btn-danger'
+                        },
+                        didOpen: () => {
+                            const popup = Swal.getPopup();
+                            popup.style.width = '700px';
+                        },
+                        // بقیه تنظیمات مشابه قبل
+                        preConfirm: () => {
+                            const popup = Swal.getPopup();
+                            const isEdit = !!existingData;
+
+                            const fields = {
+                                name: popup.querySelector('#name'),
+                                author: popup.querySelector('#author'),
+                                subject: popup.querySelector('#subject'),
+                                post_format: popup.querySelector('#post_format'),
+                                language: popup.querySelector('#language'),
+                                pub_date: popup.querySelector('#pub-date'),
+                                file: popup.querySelector('#file')
+                            };
+
+                            // اعتبارسنجی فیلدهای اصلی (بدون فایل)
+                            const mainFields = [fields.name, fields.author, fields.subject, fields.post_format, fields.language, fields.pub_date];
+                            const emptyMainFields = mainFields.filter(field => !field.value.trim());
+
+                            if (emptyMainFields.length > 0) {
+                                Swal.showValidationMessage('لطفا تمام فیلدهای الزامی را پر کنید');
+                                return false;
+                            }
+
+                            // اعتبارسنجی فایل فقط در حالت ایجاد
+                            if (!isEdit && fields.file.files.length === 0) {
+                                Swal.showValidationMessage('لطفا فایل اثر را انتخاب کنید');
+                                return false;
+                            }
+
+                            // اعتبارسنجی تاریخ
+                            const datePattern = /^14\d{2}\/\d{2}\/\d{2}$/;
+                            if (!datePattern.test(fields.pub_date.value)) {
+                                Swal.showValidationMessage('فرمت تاریخ باید به صورت 1403/10/20 باشد');
+                                return false;
+                            }
+
+                            return {
+                                name: fields.name.value,
+                                author: fields.author.value,
+                                subject: fields.subject.value,
+                                post_format: fields.post_format.value,
+                                language: fields.language.value,
+                                publication_date: fields.pub_date.value,
+                                file: fields.file.files[0] || null
+                            };
+                        }
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            try {
+                                const isEdit = !!postId;
+                                const url = isEdit ? `/library/${postId}` : '/library';
+                                const method ='POST';
+
+                                // ساخت FormData
+                                const formData = new FormData();
+                                formData.append('name', result.value.name);
+                                formData.append('author', result.value.author);
+                                formData.append('subject', result.value.subject);
+                                formData.append('post_format', result.value.post_format);
+                                formData.append('language', result.value.language);
+                                formData.append('publication_date', result.value.publication_date);
+
+                                if (result.value.file) {
+                                    formData.append('file', result.value.file);
+                                }
+
+                                // ارسال درخواست
+                                const response = await fetch(url, {
+                                    method: method,
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                    },
+                                    body: formData
+                                });
+                                const data = await response.json();
+
+                                if (!response.ok) throw new Error(data.message || 'خطا در عملیات');
+
+                                Swal.fire({
+                                    title: isEdit ? 'ویرایش موفق' : 'ثبت موفق',
+                                    text: isEdit ? 'اطلاعات با موفقیت ویرایش شد' : 'اطلاعات با موفقیت ثبت شد',
+                                    icon: 'success'
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } catch (error) {
+                                Swal.fire({
+                                    title: 'خطا!',
+                                    text: error.message,
+                                    icon: 'error'
+                                });
+                            }
+                        }
+                    });
+
+                } catch (error) {
+                    Swal.fire('خطا!', error.message, 'error');
+                }
+            }
+
+            async function editPost(postId) {
+                try {
+                    // نمایش لودینگ
+                    Swal.fire({
+                        title: 'در حال بارگذاری...',
+                        html: 'لطفا منتظر بمانید',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading()
+                        }
+                    });
+
+                    // دریافت اطلاعات اثر
+                    const response = await fetch(`/library/${postId}`);
+                    if (!response.ok) throw new Error('خطا در دریافت داده‌ها');
+                    const postData = await response.json();
+
+                    // بارگذاری لیست‌های مربوطه
+                    const [languages, postSubjects, postFormats] = await Promise.all([
+                        loadLanguages(),
+                        loadPostSubjects(),
+                        loadPostFormats(),
+                    ]);
+
+                    // پر کردن فرم با داده‌های موجود
+                    showForm(postData, languages, postSubjects, postFormats, postId);
+
+                } catch (error) {
+                    Swal.fire('خطا!', error.message, 'error');
+                }
+            }
+
+                $('.library-add-post').on('click', function (e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'در حال بارگذاری...',
+                        html: 'لطفا منتظر بمانید',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading()
+                        }
+                    });
+                    showForm();
+                });
+                $('.library-edit-post').on('click', function (e) {
+                    e.preventDefault();
+                    editPost($(this).data('id'));
+                });
+                $('.library-remove-post').on('click', function (e) {
+                    e.preventDefault();
+                    const postId = $(this).data('id');
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+                    Swal.fire({
+                        title: 'آیا مطمئن هستید؟',
+                        text: "این عمل قابل بازگشت نیست!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'بله، حذف شود!',
+                        cancelButtonText: 'انصراف',
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            try {
+                                // نمایش لودینگ
+                                Swal.fire({
+                                    title: 'در حال حذف...',
+                                    allowOutsideClick: false,
+                                    didOpen: () => Swal.showLoading()
+                                });
+
+                                // ارسال درخواست حذف
+                                const response = await fetch(`/library/${postId}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': csrfToken
+                                    }
+                                });
+
+                                const data = await response.json();
+
+                                if (!response.ok) throw new Error(data.message || 'خطا در حذف اطلاعات');
+
+                                // نمایش پیام موفقیت
+                                Swal.fire({
+                                    title: 'حذف شد!',
+                                    text: 'آیتم مورد نظر با موفقیت حذف شد',
+                                    icon: 'success'
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+
+                            } catch (error) {
+                                Swal.fire({
+                                    title: 'خطا!',
+                                    text: error.message,
+                                    icon: 'error'
+                                });
+                            }
+                        }
+                    });
+                });
+
                 break;
             case "/Profile":
                 resetFields();

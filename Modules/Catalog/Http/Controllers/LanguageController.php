@@ -61,4 +61,14 @@ class LanguageController extends Controller
         return redirect()->route('languages.index')
             ->with('success', 'زبان با موفقیت ویرایش شد.');
     }
+
+    /**
+     * Get all languages
+     * @return mixed
+     */
+    public function allLanguages()
+    {
+        $languages = Language::select('id','name')->where('status',1)->orderBy('name')->get()->toJson();
+        return $languages;
+    }
 }

@@ -13,6 +13,9 @@
 
 use Modules\Library\Http\Controllers\LibraryController;
 
-Route::prefix('library')->as('library.')->group(function () {
+Route::prefix('library')->group(function () {
     Route::resource('/', LibraryController::class);
+    Route::get('/{id}', [LibraryController::class, 'show'])->name('library.show');
+    Route::post('/{id}', [LibraryController::class, 'update'])->name('library.update');
+    Route::delete('/{id}', [LibraryController::class, 'destroy'])->name('library.destroy');
 });

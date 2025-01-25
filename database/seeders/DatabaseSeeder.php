@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             DefaultUsers::class,
             PostFormats::class,
             ScientificGroups::class,
+            DefaultLanguages::class,
+            DefaultPostSubjects::class,
         ]);
 
     }

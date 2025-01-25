@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('subject');
             $table->string('language');
             $table->string('publication_date');
+            $table->string('file')->nullable();
             $table->boolean('status')->default(1);
             $table->unsignedBigInteger('adder')->nullable();
             $table->foreign('adder')->references('id')->on('users');

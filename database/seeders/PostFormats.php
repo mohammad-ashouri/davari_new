@@ -14,7 +14,8 @@ class PostFormats extends Seeder
     {
         PostFormat::insert([
             ['name' => 'کتاب','adder' => 1],
-            ['name' => 'مقاله','adder' => 1]
+            ['name' => 'مقاله','adder' => 1],
+            ['name' => 'پایان نامه','adder' => 1],
         ]);
     }
 }

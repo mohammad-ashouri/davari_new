@@ -11,11 +11,17 @@
 |
 */
 
+use Modules\Catalog\Http\Controllers\LanguageController;
+use Modules\Catalog\Http\Controllers\PostFormatController;
+use Modules\Catalog\Http\Controllers\PostSubjectController;
 use Modules\InternalPublication\Http\Controllers\InternalPublicationController;
 
 Route::prefix('catalog')->group(function () {
+    Route::get('/post-formats/get-all', [PostFormatController::class,'allPostFormats']);
     Route::resource('post-formats', PostFormatController::class);
     Route::resource('scientific-groups', ScientificGroupController::class);
+    Route::get('/languages/get-all', [LanguageController::class,'allLanguages']);
     Route::resource('languages', LanguageController::class);
+    Route::get('/post-subjects/get-all', [PostSubjectController::class,'allPostSubjects']);
     Route::resource('post-subjects', PostSubjectController::class);
 });

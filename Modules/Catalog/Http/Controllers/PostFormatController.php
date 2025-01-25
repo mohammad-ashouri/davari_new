@@ -61,4 +61,14 @@ class PostFormatController extends Controller
         return redirect()->route('post-formats.index')
             ->with('success', 'قالب اثر با موفقیت ویرایش شد.');
     }
+
+    /**
+     * Get all post formats
+     * @return mixed
+     */
+    public function allPostFormats()
+    {
+        $postFormats = PostFormat::select('id','name')->where('status',1)->orderBy('name')->get()->toJson();
+        return $postFormats;
+    }
 }

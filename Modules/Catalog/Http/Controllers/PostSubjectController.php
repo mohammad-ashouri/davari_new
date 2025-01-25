@@ -61,4 +61,14 @@ class PostSubjectController extends Controller
         return redirect()->route('post-subjects.index')
             ->with('success', 'موضوع اثر با موفقیت ویرایش شد.');
     }
+
+    /**
+     * Get all post subjects
+     * @return mixed
+     */
+    public function allPostSubjects()
+    {
+        $postSubjects = PostSubject::select('id','name')->where('status',1)->orderBy('name')->get()->toJson();
+        return $postSubjects;
+    }
 }
