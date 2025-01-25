@@ -531,40 +531,54 @@ $(document).ready(function () {
 
         $('.post-revocation').click(function (e) {
             e.preventDefault();
-            $.ajax({
-                type: 'POST', url: "/internal-publication/revocation",
-                data: {
-                    id: $(this).data('id')
-                }
-                , headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                }, success: function (response) {
-                    if (response) {
-                        let timerInterval;
-                        Swal.fire({
-                            title: "اثر شما با موفقیت باطل شد.",
-                            html: "این پیام بعد از <b></b> ثانیه به صورت خودکار بسته میشود.",
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: () => {
-                                Swal.showLoading();
-                                const timer = Swal.getPopup().querySelector("b");
-                                timerInterval = setInterval(() => {
-                                    timer.textContent = `${Swal.getTimerLeft()}`;
-                                }, 100);
-                            },
-                            willClose: () => {
-                                clearInterval(timerInterval);
+            Swal.fire({
+                title: 'آیا از ابطال اثر اطمینان دارید؟',
+                text: "",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'بله، باطل کن!',
+                cancelButtonText: 'لغو'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST', url: "/internal-publication/revocation",
+                        data: {
+                            id: $(this).data('id')
+                        }
+                        , headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        }, success: function (response) {
+                            if (response) {
+                                let timerInterval;
+                                Swal.fire({
+                                    title: "اثر شما با موفقیت باطل شد.",
+                                    html: "این پیام بعد از <b></b> ثانیه به صورت خودکار بسته میشود.",
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                        const timer = Swal.getPopup().querySelector("b");
+                                        timerInterval = setInterval(() => {
+                                            timer.textContent = `${Swal.getTimerLeft()}`;
+                                        }, 100);
+                                    },
+                                    willClose: () => {
+                                        clearInterval(timerInterval);
+                                    }
+                                }).then((result) => {
+                                    /* Read more about handling dismissals below */
+                                    window.location.reload();
+                                });
                             }
-                        }).then((result) => {
-                            /* Read more about handling dismissals below */
-                            window.location.reload();
-                        });
-                    }
-                }, error: function (xhr, textStatus, errorThrown) {
-                    // console.log(xhr);
+                        }, error: function (xhr, textStatus, errorThrown) {
+                            // console.log(xhr);
+                        }
+                    });
+                } else {
+                    return false;
                 }
             });
+
         });
     } else {
         switch (pathname) {
