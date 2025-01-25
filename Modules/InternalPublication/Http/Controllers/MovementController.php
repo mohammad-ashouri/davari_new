@@ -44,7 +44,7 @@ class MovementController extends Controller
         $this->validate($request, [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'post_file' => 'nullable|file|mimes:doc,docx,pdf|max:15360',
+            'post_file' => 'nullable|file|mimes:doc,docx,pdf|max:50000',
             'post_id' => 'nullable|integer|exists:posts,id',
             'post_type' => 'required|string|in:ارسال به نشر داخلی,ارسال به مدیر گروه,ارسال به مدیر پژوهش,ارسال به ویراستار,ارسال به طراح,ارسال به صفحه آرا,ارسال به معاون',
         ]);
