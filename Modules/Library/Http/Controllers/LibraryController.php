@@ -55,7 +55,7 @@ class LibraryController extends Controller
             'post_format' => 'required|integer|exists:post_formats,id',
             'language' => 'required|integer|exists:languages,id',
             'publication_date' => 'required|string|max:10',
-            'file' => 'required|file|mimes:pdf,doc,docx|max:20480',
+            'file' => 'required|file|mimes:pdf,doc,docx,rar,zip,jpg,jpeg,psd,bmp,tif,tiff|max:20480',
         ]);
 
 
@@ -114,7 +114,7 @@ class LibraryController extends Controller
             'post_format' => 'required|integer|exists:post_formats,id',
             'language' => 'required|integer|exists:languages,id',
             'publication_date' => 'required|string|max:10',
-            'file' => 'nullable|file|mimes:pdf,doc,docx|max:20480',
+            'file' => 'nullable|file|mimes:pdf,doc,docx,rar,zip,jpg,jpeg,psd,bmp,tif,tiff|max:20480',
         ]);
         $library = Library::findOrFail($id);
         if ($request->hasFile('file')) {

@@ -65,7 +65,7 @@ class ResearchController extends Controller
             'title' => 'required|string|max:255',
             'post_format' => 'required|integer|exists:post_formats,id',
             'description' => 'nullable|string',
-            'post_file' => 'required|file|mimes:pdf,doc,docx',
+            'post_file' => 'required|file|mimes:pdf,doc,docx,rar,zip,jpg,jpeg,psd,bmp,tif,tiff',
         ]);
 
         if (auth()->user()->hasRole('مدیر گروه')) {

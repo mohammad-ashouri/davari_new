@@ -69,13 +69,13 @@
                                    class="text-gray-900 text-sm font-bold whitespace-nowrap">فایل
                                 اثر:</label>
                             <input id="post_file" name="post_file" type="file"
-                                   accept=".pdf, .doc, .docx"
+                                   accept=".pdf, .doc, .docx,.rar,.zip,.jpg,.jpeg,.psd,.bmp,.tif,.tiff"
                                    class="border border-gray-300-300 px-3 py-2 w-full rounded-lg focus:ring-blue-500 focus:border-blue-500">
                             <div class="mt-1 text-sm">
                                 <div class="text-red-500 font-medium mb-1">الزامات فایل</div>
                                 <ul class=" text-xs font-normal ml-4 space-y-1">
                                     <li class="text-red-500">
-                                        فرمت های قابل پشتیبانی: pdf, doc, docx
+                                        فرمت های قابل پشتیبانی: pdf, doc, docx,rar,zip,jpg,jpeg,psd,bmp,tif,tiff
                                     </li>
                                     <li class="text-red-500">
                                         حداکثر حجم: 15 مگابایت
