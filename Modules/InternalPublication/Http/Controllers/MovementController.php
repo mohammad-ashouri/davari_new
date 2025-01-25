@@ -195,19 +195,21 @@ class MovementController extends Controller
         });
 
         $movements = InternalPublicationPostMovementHistory::where('p_id', $post->id)
-            ->when(!empty($userPermissions), function ($query) use ($userPermissions, $permissions) {
-                $query->where(function ($subQuery) use ($userPermissions, $permissions) {
-                    foreach ($userPermissions as $permission) {
-                        if (isset($permissions[$permission])) {
-                            $roles = $permissions[$permission];
-                            $subQuery->orWhere(function ($innerQuery) use ($roles) {
-                                $innerQuery->where('sender_role', $roles['sender_role'])
-                                    ->where('receiver_role', $roles['receiver_role']);
-                            });
+            ->where(function ($query) use ($userPermissions, $permissions) {
+                $query->when(!empty($userPermissions), function ($subQuery) use ($userPermissions, $permissions) {
+                    $subQuery->where(function ($innerSubQuery) use ($userPermissions, $permissions) {
+                        foreach ($userPermissions as $permission) {
+                            if (isset($permissions[$permission])) {
+                                $roles = $permissions[$permission];
+                                $innerSubQuery->orWhere(function ($q) use ($roles) {
+                                    $q->where('sender_role', $roles['sender_role'])
+                                        ->where('receiver_role', $roles['receiver_role']);
+                                });
+                            }
                         }
-                    }
-                })
-                    ->orWhere('type', 'ابطال اثر');
+                    });
+                });
+                $query->orWhere('type', 'ابطال اثر');
             })
             ->orderByDesc('created_at')
             ->get();
